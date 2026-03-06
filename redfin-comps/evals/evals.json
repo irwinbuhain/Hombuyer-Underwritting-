@@ -1,0 +1,23 @@
+{
+  "skill_name": "redfin-comps",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm underwriting a single-family in Cleveland Heights — the address is 3456 Quilliams Rd, Cleveland Heights, OH 44121. Can you pull comps for the last 6 months within about a mile radius? I want to see all recently sold properties so I can figure out the ARV.",
+      "expected_output": "A Markdown table of comparable sold properties near 3456 Quilliams Rd, Cleveland Heights OH 44121, scraped from Redfin, covering approximately the last 180 days. Columns include: Address, Sale Price, Beds, Baths, Sqft, $/Sqft, Year Built, Sale Date, Days on Market, Property Type, Off-Market flag. A CSV and JSON file should also be saved to .tmp/. The neighborhood (Cleveland Heights, Grade A-) should be mentioned.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "what did duplexes sell for near 1156 Quilliams Rd, Richmond Heights OH 44143 in the last year? need comps for my deal analysis",
+      "expected_output": "A Markdown comps table showing recently sold properties (preferably multi-family/duplex) near 1156 Quilliams Rd, Richmond Heights OH 44143, with a 12-month lookback. Includes sale prices, beds, baths, sqft, price-per-sqft, and sale dates. Script is called with --lookback-days 365.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I'm looking at a property on W 58th St in Cleveland, near 3279 W 58th St, Cleveland OH 44102. Pull me comps — similar SFRs sold in the last 90 days within 0.5 miles. Clark Fulton area.",
+      "expected_output": "Markdown comps table for properties near 3279 W 58th St, Cleveland OH 44102. 90-day lookback, 0.5-mile radius. Should note that Clark Fulton is a Grade B neighborhood. Output CSV and JSON saved to .tmp/.",
+      "files": []
+    }
+  ]
+}

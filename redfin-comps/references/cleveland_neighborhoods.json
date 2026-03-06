@@ -1,0 +1,807 @@
+{
+  "source": "City of Cleveland 34 Statistical Planning Areas (SPAs)",
+  "notes": "Bounding boxes are approximate. Each entry includes min_lat, max_lat, min_lon, max_lon for use as Redfin API viewport, plus approximate boundary street descriptions.",
+  "neighborhoods": [
+    {
+      "name": "St. Clair-Superior",
+      "aliases": [
+        "St Clair Superior",
+        "St. Clair Superior"
+      ],
+      "investment_grade": "F",
+      "bbox": {
+        "min_lat": 41.5,
+        "max_lat": 41.53,
+        "min_lon": -81.68,
+        "max_lon": -81.6
+      },
+      "boundary_notes": "N: Lake Erie, S: Superior, E: E82nd, W: E30th"
+    },
+    {
+      "name": "Glenville",
+      "aliases": [
+        "Forest Hills",
+        "Glenville-Forest Hills"
+      ],
+      "investment_grade": "C-/F",
+      "bbox": {
+        "min_lat": 41.51,
+        "max_lat": 41.555,
+        "min_lon": -81.64,
+        "max_lon": -81.57
+      },
+      "boundary_notes": "N: Lake Erie/Lakeshore Blvd, S: Superior Ave, E: E152nd, W: E79th"
+    },
+    {
+      "name": "Lee-Miles",
+      "aliases": [
+        "Lee Miles",
+        "Lee-Harvard",
+        "Lee Harvard",
+        "Lee-Seville",
+        "Lee Seville"
+      ],
+      "investment_grade": "C-/C",
+      "polygons": [
+        {
+          "label": "C- | Lee-Miles (core)",
+          "coordinates": [
+            [
+              -81.564814,
+              41.424636
+            ],
+            [
+              -81.537164,
+              41.424699
+            ],
+            [
+              -81.537068,
+              41.430049
+            ],
+            [
+              -81.538662,
+              41.430553
+            ],
+            [
+              -81.546094,
+              41.435079
+            ],
+            [
+              -81.564805,
+              41.440189
+            ],
+            [
+              -81.564814,
+              41.424636
+            ]
+          ]
+        },
+        {
+          "label": "C | Lee-Miles (extended)",
+          "coordinates": [
+            [
+              -81.5725704,
+              41.457587
+            ],
+            [
+              -81.5731174,
+              41.453018
+            ],
+            [
+              -81.5732604,
+              41.449886
+            ],
+            [
+              -81.5732604,
+              41.449886
+            ],
+            [
+              -81.564814,
+              41.440189
+            ],
+            [
+              -81.546094,
+              41.435079
+            ],
+            [
+              -81.538662,
+              41.430553
+            ],
+            [
+              -81.537068,
+              41.430049
+            ],
+            [
+              -81.537164,
+              41.424699
+            ],
+            [
+              -81.536138,
+              41.430049
+            ],
+            [
+              -81.536138,
+              41.43004
+            ],
+            [
+              -81.536138,
+              41.430049
+            ],
+            [
+              -81.5361,
+              41.43
+            ],
+            [
+              -81.536,
+              41.43
+            ],
+            [
+              -81.536,
+              41.438
+            ],
+            [
+              -81.5725704,
+              41.457587
+            ]
+          ]
+        }
+      ],
+      "bbox": {
+        "min_lat": 41.42464,
+        "max_lat": 41.45759,
+        "min_lon": -81.57326,
+        "max_lon": -81.53614
+      },
+      "boundary_notes": "N: Miles Ave, S: I-480/Northfield, E: Northfield Rd (city limit), W: Lee Rd"
+    },
+    {
+      "name": "Union-Miles",
+      "aliases": [
+        "Union Miles",
+        "Union/Miles"
+      ],
+      "bbox": {
+        "min_lat": 41.43,
+        "max_lat": 41.46,
+        "min_lon": -81.66,
+        "max_lon": -81.6
+      },
+      "boundary_notes": "N: Harvard Ave, S: Miles Ave, E: E153rd, W: E116th"
+    },
+    {
+      "name": "Mount Pleasant",
+      "aliases": [
+        "Mt. Pleasant",
+        "Mt Pleasant"
+      ],
+      "bbox": {
+        "min_lat": 41.434,
+        "max_lat": 41.462,
+        "min_lon": -81.64,
+        "max_lon": -81.57
+      },
+      "boundary_notes": "N: Kinsman Rd, S: Harvard Ave, E: E153rd, W: E116th"
+    },
+    {
+      "name": "Kinsman",
+      "bbox": {
+        "min_lat": 41.455,
+        "max_lat": 41.48,
+        "min_lon": -81.66,
+        "max_lon": -81.6
+      },
+      "boundary_notes": "N: Union Ave, S: Kinsman Rd, E: E145th, W: E105th"
+    },
+    {
+      "name": "Corlett",
+      "bbox": {
+        "min_lat": 41.444,
+        "max_lat": 41.469,
+        "min_lon": -81.7,
+        "max_lon": -81.635
+      },
+      "boundary_notes": "N: Harvard Ave, S: Turney/Granger, E: E131st, W: E116th"
+    },
+    {
+      "name": "Buckeye-Woodhill",
+      "aliases": [
+        "Buckeye Woodhill"
+      ],
+      "bbox": {
+        "min_lat": 41.462,
+        "max_lat": 41.49,
+        "min_lon": -81.635,
+        "max_lon": -81.58
+      },
+      "boundary_notes": "N: Woodhill Rd, S: Kinsman, E: E145th, W: E121st"
+    },
+    {
+      "name": "Buckeye-Shaker Square",
+      "aliases": [
+        "Buckeye Shaker",
+        "Shaker Square"
+      ],
+      "bbox": {
+        "min_lat": 41.47,
+        "max_lat": 41.498,
+        "min_lon": -81.62,
+        "max_lon": -81.56
+      },
+      "boundary_notes": "N: Shaker Blvd, S: Woodhill Rd, E: E153rd, W: E105th"
+    },
+    {
+      "name": "Central",
+      "bbox": {
+        "min_lat": 41.477,
+        "max_lat": 41.5,
+        "min_lon": -81.68,
+        "max_lon": -81.64
+      },
+      "boundary_notes": "N: Euclid Ave, S: Harvard/Kinsman, E: E55th, W: E14th"
+    },
+    {
+      "name": "Fairfax",
+      "bbox": {
+        "min_lat": 41.49,
+        "max_lat": 41.51,
+        "min_lon": -81.64,
+        "max_lon": -81.59
+      },
+      "boundary_notes": "N: Euclid Ave, S: Kinsman, E: E107th, W: E71st"
+    },
+    {
+      "name": "Hough",
+      "bbox": {
+        "min_lat": 41.496,
+        "max_lat": 41.52,
+        "min_lon": -81.63,
+        "max_lon": -81.583
+      },
+      "boundary_notes": "N: Superior Ave, S: Euclid Ave, E: E105th, W: E55th"
+    },
+    {
+      "name": "University",
+      "aliases": [
+        "University Circle"
+      ],
+      "bbox": {
+        "min_lat": 41.499,
+        "max_lat": 41.52,
+        "min_lon": -81.615,
+        "max_lon": -81.577
+      },
+      "boundary_notes": "N: Euclid Ave, S: MLK Jr Dr, E: E130th, W: E105th"
+    },
+    {
+      "name": "Goodrich-Kirtland Park",
+      "aliases": [
+        "Goodrich Kirtland",
+        "Goodrich/Kirtland"
+      ],
+      "bbox": {
+        "min_lat": 41.49,
+        "max_lat": 41.516,
+        "min_lon": -81.58,
+        "max_lon": -81.545
+      },
+      "boundary_notes": "E side near E114th-E152nd, S of Euclid"
+    },
+    {
+      "name": "Collinwood-Nottingham",
+      "aliases": [
+        "Collinwood"
+      ],
+      "bbox": {
+        "min_lat": 41.518,
+        "max_lat": 41.555,
+        "min_lon": -81.575,
+        "max_lon": -81.528
+      },
+      "boundary_notes": "N: Lake Erie, S: St Clair, E: E168th/Euclid border, W: E152nd"
+    },
+    {
+      "name": "North Shore Collinwood",
+      "aliases": [
+        "North Collinwood"
+      ],
+      "bbox": {
+        "min_lat": 41.532,
+        "max_lat": 41.56,
+        "min_lon": -81.6,
+        "max_lon": -81.545
+      },
+      "boundary_notes": "Waterloo/Lakeshore district"
+    },
+    {
+      "name": "Broadway-Slavic Village",
+      "aliases": [
+        "Slavic Village",
+        "Broadway"
+      ],
+      "bbox": {
+        "min_lat": 41.455,
+        "max_lat": 41.49,
+        "min_lon": -81.68,
+        "max_lon": -81.62
+      },
+      "boundary_notes": "N: Union Ave, S: Harvard Ave, E: E65th/E71st area, W: Cuyahoga River"
+    },
+    {
+      "name": "Stockyards",
+      "bbox": {
+        "min_lat": 41.455,
+        "max_lat": 41.48,
+        "min_lon": -81.72,
+        "max_lon": -81.668
+      },
+      "boundary_notes": "W of Cuyahoga River near Clark Ave"
+    },
+    {
+      "name": "Brooklyn Centre",
+      "aliases": [
+        "Brooklyn Center"
+      ],
+      "bbox": {
+        "min_lat": 41.445,
+        "max_lat": 41.47,
+        "min_lon": -81.73,
+        "max_lon": -81.69
+      },
+      "boundary_notes": "Near W25th/Riverside"
+    },
+    {
+      "name": "Old Brooklyn",
+      "bbox": {
+        "min_lat": 41.43,
+        "max_lat": 41.46,
+        "min_lon": -81.73,
+        "max_lon": -81.71
+      },
+      "boundary_notes": "S of Brookpark Rd, near W130th"
+    },
+    {
+      "name": "West Boulevard",
+      "aliases": [
+        "West Blvd"
+      ],
+      "bbox": {
+        "min_lat": 41.463,
+        "max_lat": 41.488,
+        "min_lon": -81.76,
+        "max_lon": -81.72
+      },
+      "boundary_notes": "Near W130th, N of Detroit"
+    },
+    {
+      "name": "Cudell",
+      "bbox": {
+        "min_lat": 41.478,
+        "max_lat": 41.505,
+        "min_lon": -81.76,
+        "max_lon": -81.728
+      },
+      "boundary_notes": "Near W117th, between Detroit and Lorain"
+    },
+    {
+      "name": "Jefferson",
+      "bbox": {
+        "min_lat": 41.448,
+        "max_lat": 41.475,
+        "min_lon": -81.785,
+        "max_lon": -81.75
+      },
+      "boundary_notes": "Near W150th/W140th area"
+    },
+    {
+      "name": "Kamm's",
+      "aliases": [
+        "Kamm's Corners"
+      ],
+      "bbox": {
+        "min_lat": 41.43,
+        "max_lat": 41.462,
+        "min_lon": -81.81,
+        "max_lon": -81.775
+      },
+      "boundary_notes": "Near W170th/Rocky River Dr"
+    },
+    {
+      "name": "Bellaire-Puritas",
+      "aliases": [
+        "Bellaire Puritas"
+      ],
+      "bbox": {
+        "min_lat": 41.42,
+        "max_lat": 41.455,
+        "min_lon": -81.79,
+        "max_lon": -81.75
+      },
+      "boundary_notes": "Near Puritas Ave/W150th"
+    },
+    {
+      "name": "Hopkins",
+      "bbox": {
+        "min_lat": 41.393,
+        "max_lat": 41.428,
+        "min_lon": -81.87,
+        "max_lon": -81.82
+      },
+      "boundary_notes": "Near airport, W160th\u2013W220th area"
+    },
+    {
+      "name": "Tremont",
+      "bbox": {
+        "min_lat": 41.476,
+        "max_lat": 41.498,
+        "min_lon": -81.7,
+        "max_lon": -81.67
+      },
+      "boundary_notes": "Near Professor Ave, S of I-90, W of Cuyahoga"
+    },
+    {
+      "name": "Detroit Shoreway",
+      "aliases": [
+        "Detroit-Shoreway",
+        "Detroit Shoreway"
+      ],
+      "bbox": {
+        "min_lat": 41.487,
+        "max_lat": 41.512,
+        "min_lon": -81.73,
+        "max_lon": -81.7
+      },
+      "boundary_notes": "Near W65th/Detroit Ave"
+    },
+    {
+      "name": "Edgewater",
+      "bbox": {
+        "min_lat": 41.483,
+        "max_lat": 41.51,
+        "min_lon": -81.77,
+        "max_lon": -81.73
+      },
+      "boundary_notes": "Near W117th/Lakewood border"
+    },
+    {
+      "name": "Ohio City",
+      "bbox": {
+        "min_lat": 41.48,
+        "max_lat": 41.502,
+        "min_lon": -81.705,
+        "max_lon": -81.685
+      },
+      "boundary_notes": "Near W25th, N of Lorain"
+    },
+    {
+      "name": "Cuyahoga Valley",
+      "aliases": [
+        "Big Creek"
+      ],
+      "bbox": {
+        "min_lat": 41.436,
+        "max_lat": 41.462,
+        "min_lon": -81.72,
+        "max_lon": -81.69
+      },
+      "boundary_notes": "Along Big Creek/Cuyahoga near Denison Ave"
+    },
+    {
+      "name": "Downtown",
+      "aliases": [
+        "Downtown Cleveland"
+      ],
+      "bbox": {
+        "min_lat": 41.49,
+        "max_lat": 41.51,
+        "min_lon": -81.7,
+        "max_lon": -81.672
+      },
+      "boundary_notes": "CBD, Superior to the lake, E9th to W9th"
+    },
+    {
+      "name": "Euclid-Green",
+      "aliases": [
+        "Euclid Green"
+      ],
+      "bbox": {
+        "min_lat": 41.538,
+        "max_lat": 41.57,
+        "min_lon": -81.54,
+        "max_lon": -81.5
+      },
+      "boundary_notes": "NE corner of the city"
+    },
+    {
+      "name": "East Cleveland",
+      "investment_grade": "D",
+      "polygons": [
+        {
+          "coordinates": [
+            [
+              41.523005,
+              -81.598082
+            ],
+            [
+              41.520268,
+              -81.598107
+            ],
+            [
+              41.517578,
+              -81.598124
+            ],
+            [
+              41.516105,
+              -81.598136
+            ],
+            [
+              41.515631,
+              -81.59173
+            ],
+            [
+              41.515606,
+              -81.591084
+            ],
+            [
+              41.521509,
+              -81.585913
+            ],
+            [
+              41.521561,
+              -81.586015
+            ],
+            [
+              41.52172,
+              -81.585865
+            ],
+            [
+              41.521857,
+              -81.586068
+            ],
+            [
+              41.523277,
+              -81.584747
+            ],
+            [
+              41.52397,
+              -81.586616
+            ],
+            [
+              41.524741,
+              -81.587939
+            ],
+            [
+              41.525513,
+              -81.587167
+            ],
+            [
+              41.527633,
+              -81.590772
+            ],
+            [
+              41.527784,
+              -81.591589
+            ],
+            [
+              41.5271073,
+              -81.5919699
+            ],
+            [
+              41.5269125,
+              -81.5928872
+            ],
+            [
+              41.5273602,
+              -81.5928789
+            ],
+            [
+              41.527615,
+              -81.5937051
+            ],
+            [
+              41.528051,
+              -81.5949195
+            ],
+            [
+              41.5285481,
+              -81.5963894
+            ],
+            [
+              41.5302424,
+              -81.5965289
+            ],
+            [
+              41.5304589,
+              -81.5967543
+            ],
+            [
+              41.5304659,
+              -81.5970667
+            ],
+            [
+              41.5303886,
+              -81.597194
+            ],
+            [
+              41.530997,
+              -81.5981889
+            ],
+            [
+              41.5308484,
+              -81.59843
+            ],
+            [
+              41.530768,
+              -81.598161
+            ],
+            [
+              41.523005,
+              -81.598082
+            ]
+          ]
+        },
+        {
+          "coordinates": [
+            [
+              41.51934,
+              -81.58199
+            ],
+            [
+              41.519653,
+              -81.583145
+            ],
+            [
+              41.519826,
+              -81.58352
+            ],
+            [
+              41.519946,
+              -81.583746
+            ],
+            [
+              41.52093,
+              -81.582973
+            ],
+            [
+              41.52122,
+              -81.583832
+            ],
+            [
+              41.521276,
+              -81.585135
+            ],
+            [
+              41.521505,
+              -81.585446
+            ],
+            [
+              41.52172,
+              -81.585865
+            ],
+            [
+              41.521643,
+              -81.585932
+            ],
+            [
+              41.521561,
+              -81.586015
+            ],
+            [
+              41.521312,
+              -81.585543
+            ],
+            [
+              41.521079,
+              -81.585258
+            ],
+            [
+              41.520589,
+              -81.584888
+            ],
+            [
+              41.520123,
+              -81.584443
+            ],
+            [
+              41.519693,
+              -81.583762
+            ],
+            [
+              41.519485,
+              -81.583274
+            ],
+            [
+              41.519033,
+              -81.581822
+            ],
+            [
+              41.515498,
+              -81.581899
+            ],
+            [
+              41.515489,
+              -81.581256
+            ],
+            [
+              41.515539,
+              -81.576985
+            ],
+            [
+              41.515517,
+              -81.576984
+            ],
+            [
+              41.51552,
+              -81.576342
+            ],
+            [
+              41.515538,
+              -81.576343
+            ],
+            [
+              41.515543,
+              -81.575704
+            ],
+            [
+              41.515567,
+              -81.575704
+            ],
+            [
+              41.515573,
+              -81.575254
+            ],
+            [
+              41.515683,
+              -81.575256
+            ],
+            [
+              41.516224,
+              -81.575263
+            ],
+            [
+              41.516358,
+              -81.575393
+            ],
+            [
+              41.516382,
+              -81.57552
+            ],
+            [
+              41.517007,
+              -81.57513
+            ],
+            [
+              41.517772,
+              -81.576479
+            ],
+            [
+              41.518182,
+              -81.577648
+            ],
+            [
+              41.518527,
+              -81.578989
+            ],
+            [
+              41.519138,
+              -81.578667
+            ],
+            [
+              41.519911,
+              -81.581741
+            ],
+            [
+              41.51934,
+              -81.58199
+            ]
+          ]
+        }
+      ],
+      "bbox": {
+        "min_lat": 41.515489,
+        "max_lat": 41.530997,
+        "min_lon": -81.59843,
+        "max_lon": -81.57513
+      }
+    }
+  ]
+}
