@@ -41,6 +41,13 @@ st.markdown("""
     }
     
     /* Input Fields Container Styling */
+    .stTextInput label, .stNumberInput label, .stSelectbox label {
+        font-size: 13px !important;
+    }
+    .stTextInput label p, .stNumberInput label p, .stSelectbox label p {
+        font-size: 13px !important;
+    }
+    
     .stTextInput > div > div > input, 
     .stNumberInput > div > div > input,
     .stSelectbox > div > div > div {
@@ -48,8 +55,8 @@ st.markdown("""
         border: 1px solid #334155;
         border-radius: 8px;
         color: #f8fafc;
-        padding: 12px 16px;
-        font-size: 16px;
+        padding: 8px 12px;
+        font-size: 14px;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
     }
     
@@ -151,14 +158,14 @@ with col2:
 
 col_c, col_d, col_e, col_f = st.columns(4)
 with col_c:
-    rent = st.number_input("Monthly Rent ($)", min_value=0, value=2000, step=50, format="%d")
+    rent = st.number_input("Rent ($)", min_value=0, value=2000, step=50, format="%d")
 with col_d:
-    manual_taxes = st.number_input("Annual Taxes ($)", min_value=0, value=1500, step=100, format="%d")
+    manual_taxes = st.number_input("Taxes ($)", min_value=0, value=1500, step=100, format="%d")
 with col_e:
-    manual_ins = st.number_input("Annual Ins. ($)", min_value=0, value=800, step=50, format="%d")
+    manual_ins = st.number_input("Ins. ($)", min_value=0, value=800, step=50, format="%d")
 with col_f:
     neighborhood_class_override = st.selectbox(
-        "Area Grade",
+        "Grade",
         options=["Auto", "A", "B", "C", "D", "F"],
         index=0
     )
