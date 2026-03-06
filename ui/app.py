@@ -93,7 +93,7 @@ st.markdown("""
         height: 40px !important;
         min-height: 40px !important;
         padding: 0 !important;
-        font-weight: 600 !important;
+        font-weight: 800 !important;
         font-size: 16px !important;
         width: 100% !important;
         transition: all 0.2s ease;
@@ -264,7 +264,7 @@ with col_g:
     wholesale_fee_input = parse_currency(ws_str)
 
 st.markdown("<br>", unsafe_allow_html=True)
-calc_button = st.button("Calculate MAO", use_container_width=True)
+calc_button = st.button("CALCULATE MAO", use_container_width=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
