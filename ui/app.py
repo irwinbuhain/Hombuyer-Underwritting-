@@ -294,40 +294,7 @@ if calc_button:
                         </div>
                         """, unsafe_allow_html=True)
                 
-                st.markdown("---")
-                
-                # Mathematical Breakdown Section
-                st.markdown("### 📊 The Breakdown")
-                
-                scol1, scol2, scol3 = st.columns(3)
-                with scol1:
-                    st.markdown("**Fix & Flip Breakdown**")
-                    st.write(f"- **Total Profit:** ${res_ff['results']['fix_and_flip']['total_profit']:,.0f}")
-                    roi = res_ff['results']['fix_and_flip']['roi'] * 100
-                    st.write(f"- **ROI:** {roi:,.1f}%")
-                    ann_roi = res_ff['results']['fix_and_flip']['annualized_roi'] * 100
-                    st.write(f"- **Annualized ROI:** {ann_roi:,.1f}%")
-                    
-                with scol2:
-                    st.markdown("**Buy & Hold Breakdown**")
-                    st.write(f"- **Cash Flow:** ${res_bh['results']['buy_and_hold_yield_based']['monthly_cash_flow']:,.0f}/mo")
-                    cap_rate = res_bh['results']['buy_and_hold_yield_based']['cap_rate'] * 100
-                    st.write(f"- **Cap Rate:** {cap_rate:,.1f}%")
-                    coc = res_bh['results']['buy_and_hold_yield_based']['coc_return'] * 100
-                    st.write(f"- **COC:** {coc:,.1f}%")
-                    
-                with scol3:
-                    st.markdown("**BRRRR Breakdown**")
-                    st.write(f"- **Cash Out:** ${res_bh['results']['brrrr']['cash_out_profit']:,.0f}")
-                    brrrr_cf = res_bh['results']['brrrr']['monthly_cash_flow']
-                    st.write(f"- **Cash Flow:** ${brrrr_cf:,.0f}/mo")
-                    b_coc = res_bh['results']['brrrr']['coc_return']
-                    if isinstance(b_coc, str):
-                         st.write(f"- **COC:** {b_coc}")
-                    else:
-                         st.write(f"- **COC:** {b_coc * 100:,.1f}%")
-                    b_cap = res_bh['results']['brrrr']['cap_rate'] * 100
-                    st.write(f"- **Cap Rate:** {b_cap:,.1f}%")
+
                         
             except Exception as e:
                 st.error(f"Error calculating MAO: {e}")
