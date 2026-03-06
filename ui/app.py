@@ -150,7 +150,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.markdown("<h1>Underwriting Engine</h1>", unsafe_allow_html=True)
+st.markdown('<h1 style="color: #dc2626;">HOMEBUYER+</h1>', unsafe_allow_html=True)
 
 # ---------------------------------------------------------
 # Realtime JS Comma Formatter
