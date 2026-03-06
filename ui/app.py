@@ -164,8 +164,8 @@ with col_e:
 with col_f:
     neighborhood_class_override = st.selectbox(
         "Grade",
-        options=["Auto", "A", "B", "C", "D", "F"],
-        index=0
+        options=["A", "B", "C", "D", "F"],
+        index=2
     )
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -188,9 +188,8 @@ if calc_button:
                 arv = arv_override
                 final_address = "Manual Underwriting"
                 
-                # Apply map override for area grade if provided
-                if neighborhood_class_override != "Auto":
-                    neighborhood_class = neighborhood_class_override
+                # Apply map override for area grade
+                neighborhood_class = neighborhood_class_override
                 
                 # Use precise DealCheck input values
                 estimated_taxes = manual_taxes
