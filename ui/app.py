@@ -146,9 +146,7 @@ st.markdown("<h1>Underwriting Engine</h1>", unsafe_allow_html=True)
 # Centered Clean Inputs
 # ---------------------------------------------------------
 
-address = st.text_input("Property Address", placeholder="123 Main St, Cleveland, OH")
-
-arv_override = st.number_input("ARV ($)", min_value=0, value=0, step=5000, format="%d", help="Leave 0 to auto-calculate via Redfin")
+arv_override = st.number_input("After Repair Value (ARV) ($)", min_value=0, value=200000, step=5000, format="%d")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -178,68 +176,17 @@ st.markdown("<br>", unsafe_allow_html=True)
 # Main Calculation Block
 # ---------------------------------------------------------
 if calc_button:
-    final_address = address
-    if not final_address:
-        st.error("Please enter a property address to proceed.")
+    if arv_override <= 0:
+        st.error("Please enter an ARV greater than $0 to proceed.")
     else:
-        with st.spinner("🔍 Analyzing property metrics and calculating MAO..."):
+        with st.spinner("🔍 Calculating MAO..."):
             try:
-                neighborhood = "Unknown"
+                neighborhood = "Manual Entry"
                 neighborhood_class = 'C'
                 comps = []
                 
-                # 1. Fetch Comps & Neighborhood Data dynamically ONLY if ARV wasn't provided
-                if arv_override > 0:
-                     arv = arv_override
-                     st.info(f"Using User-Provided ARV: ${arv:,.0f}")
-                else:
-                     comps_script_path = os.path.join(parent_dir, 'redfin-comps', 'scripts', 'fetch_redfin_comps.py')
-                     tmp_dir = os.path.join(parent_dir, ".tmp")
-                     os.makedirs(tmp_dir, exist_ok=True)
-                     json_path = os.path.join(tmp_dir, "streamlit_comps.json")
-                     
-                     lookbacks = [180, 365, 730]
-                     for days in lookbacks:
-                         st.toast(f"Searching for matching comps ({days} days back)...")
-                         search_address = final_address if ", OH" in final_address or "Ohio" in final_address else f"{final_address}, Cleveland, OH"
-                         cmd = [
-                             sys.executable, comps_script_path,
-                             "--address", search_address,
-                             "--lookback-days", str(days),
-                             "--property-type", "any",
-                             "--output", json_path
-                         ]
-                         
-                         subprocess.run(cmd, capture_output=True, text=True)
-                         
-                         if os.path.exists(json_path):
-                             with open(json_path, 'r') as f:
-                                 comps_data = json.load(f)
-                             if len(comps_data.get('comps', [])) >= 3:
-                                 break # found enough comps
-                             
-                     if os.path.exists(json_path):
-                          with open(json_path, 'r') as f:
-                              comps_data = json.load(f)
-                          
-                          # Extract neighborhood metadata regardless of comp count
-                          neighborhood = comps_data.get('filters', {}).get('neighborhood', 'Unknown')
-                          neighborhood = neighborhood if neighborhood else "Unknown"
-                          neighborhood_class = comps_data.get('filters', {}).get('neighborhood_class', 'C')
-                          
-                          if len(comps_data.get('comps', [])) == 0:
-                              st.warning("⚠️ Could not find exact Redfin Comps even after extending search to 2 years. Defaulting to an estimated $150k ARV floor. Please override manually if needed.")
-                              arv = 150000
-                          else:
-                              # Calculate ARV based on top 3 comps
-                              top_comps = sorted(comps_data['comps'], key=lambda x: x.get('price', 0), reverse=True)[:3]
-                              arv = sum(c.get('price', 0) for c in top_comps) / len(top_comps)
-                              comps = top_comps
-                     else:
-                          st.error("Backend error: No comps data returned from the engine.")
-                          arv = 150000
-                              
-                     st.success(f"📍 **Neighborhood identified:** {neighborhood} (API Class {neighborhood_class})")
+                arv = arv_override
+                final_address = "Manual Underwriting"
                 
                 # Apply map override for area grade if provided
                 if neighborhood_class_override != "Auto":
@@ -339,51 +286,35 @@ if calc_button:
                 # Mathematical Breakdown Section
                 st.markdown("### 📊 The Breakdown")
                 
-                t_col1, t_col2 = st.tabs(["Calculation Logic", "ARV & Comps Data"])
-                
-                with t_col1:
-                    scol1, scol2, scol3 = st.columns(3)
-                    with scol1:
-                        st.markdown("**Fix & Flip Math (15% Net Profit Target)**")
-                        st.write(f"- **ARV Used:** ${arv:,.0f}")
-                        st.write(f"- Selling Costs (7.5%): -${(arv * 0.075):,.0f}")
-                        st.write(f"- Investor Profit (15%): -${(arv * 0.15):,.0f}")
-                        st.write(f"- Effective Rehab (+10% overrun): -${(rehab_ff * 1.10):,.0f}")
-                        st.write(f"- Your Wholesale Fee: -$10,000")
-                        st.write("- Minus 6-month hard money holding costs")
-                        
-                    with scol2:
-                        target_coc = res_bh['financials']['target_coc_return'] * 100
-                        st.markdown(f"**Buy & Hold Math ({target_coc:,.0f}% Cash-on-Cash)**")
-                        st.write(f"- **Gross Rent:** ${rent:,.0f}/mo (${rent*12:,.0f}/yr)")
-                        st.write(f"- **Operating Expenses:** -${res_bh['financials']['annual_expenses']:,.0f}/yr (Taxes, Ins, 10% PM, 5% Vac/Maint/CapEx)")
-                        st.write(f"- **NOI:** ${res_bh['financials']['net_operating_income']:,.0f}/yr")
-                        st.info(f"Calculates exact Purchase Price allowing {target_coc:,.0f}% ROI on all cash left in the deal (Down Payment + Effective Rehab + Fees).")
-                        
-                    with scol3:
-                        st.markdown("**BRRRR Math ($0 Left in Deal)**")
-                        st.write(f"- **Refinance Loan (80% ARV):** ${(arv * 0.80):,.0f}")
-                        st.write(f"- ARV Refinance Costs (3%): -${(arv * 0.03):,.0f}")
-                        st.write(f"- Title/Escrow Costs: -$1,000")
-                        st.write(f"- 5% Holding Costs: -${(rehab_bh * 0.05):,.0f}")
-                        st.write(f"- Effective Rehab (+10% overrun): -${(rehab_bh * 1.10):,.0f}")
-                        st.write(f"- Your Wholesale Fee: -$10,000")
-                        brrrr_cf = res_bh['results']['brrrr']['monthly_cash_flow']
-                        st.write(f"- **Yield-Based Cash Flow:** ${brrrr_cf:,.0f}/mo")
-                        st.info("Calculates MAO capped entirely by the allowable Refinance Loan minus all rehab, holding, and closing costs.")
+                scol1, scol2, scol3 = st.columns(3)
+                with scol1:
+                    st.markdown("**Fix & Flip Math (15% Net Profit Target)**")
+                    st.write(f"- **ARV Used:** ${arv:,.0f}")
+                    st.write(f"- Selling Costs (7.5%): -${(arv * 0.075):,.0f}")
+                    st.write(f"- Investor Profit (15%): -${(arv * 0.15):,.0f}")
+                    st.write(f"- Effective Rehab (+10% overrun): -${(rehab_ff * 1.10):,.0f}")
+                    st.write(f"- Your Wholesale Fee: -$10,000")
+                    st.write("- Minus 6-month hard money holding costs")
                     
-                with t_col2:
-                    st.markdown(f"**Calculated ARV: ${arv:,.0f}**")
-                    if len(comps) > 0:
-                        st.write("Based on these top comparable sales sourced from **Redfin.com** in the exact neighborhood polygon:")
-                        for idx, c in enumerate(comps):
-                            st.markdown(f"**{idx+1}. {c.get('address')}**")
-                            st.write(f"- **Sold For:** ${c.get('price', 0):,.0f} on {c.get('sale_date', 'Unknown')}")
-                            st.write(f"- **Specs:** {c.get('beds')} Bed | {c.get('baths')} Bath | {c.get('sqft')} Sqft | {c.get('condition', 'Unknown')} Condition")
-                            st.markdown(f"[View on Redfin]({c.get('url')})")
-                            st.divider()
-                    else:
-                        st.warning("No perfect 1-to-1 comps were found via the API. An estimated floor ARV of $150k was used.")
+                with scol2:
+                    target_coc = res_bh['financials']['target_coc_return'] * 100
+                    st.markdown(f"**Buy & Hold Math ({target_coc:,.0f}% Cash-on-Cash)**")
+                    st.write(f"- **Gross Rent:** ${rent:,.0f}/mo (${rent*12:,.0f}/yr)")
+                    st.write(f"- **Operating Expenses:** -${res_bh['financials']['annual_expenses']:,.0f}/yr (Taxes, Ins, 10% PM, 5% Vac/Maint/CapEx)")
+                    st.write(f"- **NOI:** ${res_bh['financials']['net_operating_income']:,.0f}/yr")
+                    st.info(f"Calculates exact Purchase Price allowing {target_coc:,.0f}% ROI on all cash left in the deal (Down Payment + Effective Rehab + Fees).")
+                    
+                with scol3:
+                    st.markdown("**BRRRR Math ($0 Left in Deal)**")
+                    st.write(f"- **Refinance Loan (80% ARV):** ${(arv * 0.80):,.0f}")
+                    st.write(f"- ARV Refinance Costs (3%): -${(arv * 0.03):,.0f}")
+                    st.write(f"- Title/Escrow Costs: -$1,000")
+                    st.write(f"- 5% Holding Costs: -${(rehab_bh * 0.05):,.0f}")
+                    st.write(f"- Effective Rehab (+10% overrun): -${(rehab_bh * 1.10):,.0f}")
+                    st.write(f"- Your Wholesale Fee: -$10,000")
+                    brrrr_cf = res_bh['results']['brrrr']['monthly_cash_flow']
+                    st.write(f"- **Yield-Based Cash Flow:** ${brrrr_cf:,.0f}/mo")
+                    st.info("Calculates MAO capped entirely by the allowable Refinance Loan minus all rehab, holding, and closing costs.")
                         
             except Exception as e:
                 st.error(f"Error calculating MAO: {e}")
