@@ -108,7 +108,7 @@ def calculate_mao(args):
     # We still use the effective_rehab to account for 10% overrun safety padding
     effective_rehab = args.rehab * 1.10
     
-    ff_end_buyer_price = (args.arv * 0.70) - effective_rehab
+    ff_end_buyer_price = (args.arv * 0.75) - effective_rehab
     ff_mao = ff_end_buyer_price - args.wholesale_fee
     
     # Calculate detailed flip metrics
@@ -210,7 +210,7 @@ def calculate_mao(args):
     # Purchase Price = (ARV * 0.80) - effective_rehab - Title/Escrow - holding_costs - Refinance Costs - $20,000
     refinance_amount = args.arv * 0.80
     refinance_costs = args.arv * 0.03
-    brrrr_end_buyer_price = refinance_amount - effective_rehab_brrrr - title_escrow_fee - (0.05 * effective_rehab_brrrr) - refinance_costs - cash_out_target
+    brrrr_end_buyer_price = (args.arv * 0.75) - effective_rehab_brrrr
     
     brrrr_mao = brrrr_end_buyer_price - args.wholesale_fee
     brrrr_annual_debt_service = refinance_amount * factor
@@ -270,7 +270,7 @@ def calculate_mao(args):
                 "total_profit": round(ff_total_profit, 2),
                 "roi": round(ff_roi, 4),
                 "annualized_roi": round(ff_annualized_roi, 4),
-                "formula": "Purchase = (ARV * 0.70) - Effective Rehab - Wholesale Fee",
+                "formula": "Purchase = (ARV * 0.75) - Effective Rehab - Wholesale Fee",
                 "assumptions": {
                     "down_payment": "20%",
                     "interest_rate": "10%",
@@ -309,7 +309,7 @@ def calculate_mao(args):
                 "monthly_cash_flow": round(brrrr_monthly_cash_flow, 2),
                 "coc_return": brrrr_coc if isinstance(brrrr_coc, str) else round(brrrr_coc, 4),
                 "cap_rate": round(brrrr_cap_rate, 4),
-                "formula": "Purchase = (ARV * 80%) - Effective Rehab(1.10x) - $1000 Title/Escrow - 5% Holding Costs - 3% ARV Refi Costs",
+                "formula": "Purchase = (ARV * 0.75) - Effective Rehab - Wholesale Fee",
                 "assumptions": {
                     "refinance_ltv": "80%",
                     "refinance_costs": "3% of ARV",
