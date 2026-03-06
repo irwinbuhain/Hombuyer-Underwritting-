@@ -102,17 +102,13 @@ def calculate_mao(args):
     # F&F Interest Rate = 10% annual -> 5% over 6 months
     # Closing/Selling Costs = 7.5% of ARV
     
-    # Let's adjust this to explicitly calculate exactly what a flipper would pay.
-    # To be safe, we will use a 15% target profit on ARV to represent a standard flipper margin.
-    profit_margin_ff = 0.15 * args.arv
-    selling_costs = 0.075 * args.arv
+    # Use the 70% Rule for Fix and Flip per User Request
+    # MAO = (ARV * 0.70) - Rehab - Wholesale Fee
     
-    # 10% Rehab Cost Overrun
+    # We still use the effective_rehab to account for 10% overrun safety padding
     effective_rehab = args.rehab * 1.10
     
-    # F&F Total Costs = Purchase + Effective Rehab + Origination(0.02 * F&F Loan) + Interest + Selling Costs + Title/Escrow
-    # Purchase = [ARV - Selling - Profit Target - Effective Rehab - 5.6% F&F Loan Costs - Title/Escrow] / 1.056
-    ff_end_buyer_price = (args.arv - selling_costs - profit_margin_ff - effective_rehab - (0.056 * effective_rehab) - title_escrow_fee) / 1.056
+    ff_end_buyer_price = (args.arv * 0.70) - effective_rehab
     ff_mao = ff_end_buyer_price - args.wholesale_fee
     
     # ---------------------------------------------------------

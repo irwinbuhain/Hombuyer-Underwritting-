@@ -295,13 +295,11 @@ if calc_button:
                 
                 scol1, scol2, scol3 = st.columns(3)
                 with scol1:
-                    st.markdown("**Fix & Flip Math (15% Net Profit Target)**")
+                    st.markdown("**Fix & Flip Math (70% Rule)**")
                     st.write(f"- **ARV Used:** ${arv:,.0f}")
-                    st.write(f"- Selling Costs (7.5%): -${(arv * 0.075):,.0f}")
-                    st.write(f"- Investor Profit (15%): -${(arv * 0.15):,.0f}")
+                    st.write(f"- ARV * 70%: ${(arv * 0.70):,.0f}")
                     st.write(f"- Effective Rehab (+10% overrun): -${(rehab_ff * 1.10):,.0f}")
                     st.write(f"- Your Wholesale Fee: -$10,000")
-                    st.write("- Minus 6-month hard money holding costs")
                     
                 with scol2:
                     target_coc = res_bh['financials']['target_coc_return'] * 100
