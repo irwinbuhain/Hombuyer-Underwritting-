@@ -111,15 +111,26 @@ def calculate_mao(args):
     ff_mao = ff_end_buyer_price - args.wholesale_fee
     
     # Calculate detailed flip metrics
-    ff_loan = 0.80 * (ff_end_buyer_price + effective_rehab)
+    # DealCheck uses MAO (Purchase Price to Seller) for the primary loan/down payment basis, not the gross end-buyer price.
+    ff_loan = 0.80 * (ff_mao + effective_rehab)
     ff_monthly_payment = (ff_loan * 0.10) / 12
-    # To the end-buyer, the wholesale assignment fee is paid completely in cash at closing. It cannot be financed into the LTV.
-    ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + (0.02 * ff_loan) + args.wholesale_fee
-    ff_holding_costs = ff_loan * 0.05
+    
+    # DealCheck origination is 2% of Purchase Price (MAO)
+    origination_fee = 0.02 * ff_mao
+    
+    # Cash needed includes down payment, origination, title, and the wholesale fee paid in cash
+    ff_cash_needed = (0.20 * (ff_mao + effective_rehab)) + title_escrow_fee + origination_fee + args.wholesale_fee
+    
+    # Holding costs (simplified to interest + 6 months of taxes/insurance)
+    ff_holding_costs = (ff_monthly_payment * 6) + (args.taxes / 2) + (args.insurance / 2)
     ff_selling_costs = args.arv * 0.075
+    
     ff_total_costs = ff_cash_needed + ff_loan + ff_holding_costs + ff_selling_costs
     ff_total_profit = args.arv - ff_total_costs
-    ff_roi = ff_total_profit / ff_cash_needed if ff_cash_needed > 0 else 0
+    
+    # DealCheck ROI denominator includes Cash Needed AND Holding Costs
+    ff_total_invested = ff_cash_needed + ff_holding_costs
+    ff_roi = ff_total_profit / ff_total_invested if ff_total_invested > 0 else 0
     ff_annualized_roi = ff_roi * 2
     
     # ---------------------------------------------------------
