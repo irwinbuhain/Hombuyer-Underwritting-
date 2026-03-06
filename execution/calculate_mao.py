@@ -105,8 +105,7 @@ def calculate_mao(args):
     # Use the 70% Rule for Fix and Flip per User Request
     # MAO = (ARV * 0.70) - Rehab - Wholesale Fee
     
-    # We still use the effective_rehab to account for 10% overrun safety padding
-    effective_rehab = args.rehab * 1.10
+    effective_rehab = args.rehab
     
     ff_end_buyer_price = (args.arv * 0.75) - effective_rehab
     ff_mao = ff_end_buyer_price - args.wholesale_fee
@@ -152,8 +151,7 @@ def calculate_mao(args):
     # 3. Calculate max allowable End-Buyer Purchase Price algebraically
     factor = calculate_mortgage_factor(bh_interest_rate, 30)
     
-    # Universal 10% Rehab Cost Overrun
-    effective_rehab_bh = args.rehab * 1.10
+    effective_rehab_bh = args.rehab
     
     # In DealCheck, the rehab is NOT financed. The Base Loan is just 80% of Purchase Price.
     # Base_Loan = Purchase_Price * 0.80
@@ -200,8 +198,7 @@ def calculate_mao(args):
     # Target: Investor pulls $20,000 CASH OUT of the deal after refinance.
     # Refinance Loan amount = 80% of ARV
     # Refinance Costs = 3% of ARV
-    # Universal 10% Rehab Cost Overrun
-    effective_rehab_brrrr = args.rehab * 1.10
+    effective_rehab_brrrr = args.rehab
     
     cash_out_target = 20000
     
