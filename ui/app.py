@@ -93,8 +93,10 @@ st.markdown("""
         height: 40px !important;
         min-height: 40px !important;
         padding: 0 !important;
-        font-weight: 800 !important;
+        font-weight: 900 !important;
         font-size: 16px !important;
+        letter-spacing: 1px !important;
+        -webkit-text-stroke: 0.5px white !important;
         width: 100% !important;
         transition: all 0.2s ease;
         box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.2);
