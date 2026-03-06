@@ -376,7 +376,7 @@ if calc_button:
                         
                         with st.expander("Calculation Breakdown", expanded=False):
                             bh_res = res_bh['results']['buy_and_hold_yield_based']
-                            st.markdown(f"**Formula**: Yield-Based (Target {res_bh['financials']['target_coc_return']*100:,.1f}%)")
+                            st.markdown(f"**Formula**: COC {res_bh['financials']['target_coc_return']*100:,.1f}%")
                             st.markdown(f"**Max Purchase Price**: ${bh_res['end_buyer_max_purchase_price']:,.0f}")
                             st.markdown(f"**Cash Needed**: ${bh_res['cash_needed']:,.0f}")
                             st.markdown(f"**Monthly Cash Flow**: ${bh_res['monthly_cash_flow']:,.0f}")
