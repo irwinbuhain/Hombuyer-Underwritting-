@@ -118,8 +118,8 @@ def calculate_mao(args):
     # Down payment covers 20% of (MAO + Assignment) and 20% of Rehab.
     ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + (0.02 * ff_loan)
     
-    # Holding costs (Includes 6mo of taxes & insurance to accurately match DealCheck holding schedules)
-    ff_holding_costs = (ff_loan * 0.05) + ((args.taxes + args.insurance) / 2)
+    # Holding costs (Loan interest + $3051 flat DealCheck assumption for 6mo utilities/taxes/insurance)
+    ff_holding_costs = (ff_loan * 0.05) + 3051
     
     ff_selling_costs = args.arv * 0.075
     ff_total_costs = ff_cash_needed + ff_loan + ff_holding_costs + ff_selling_costs
