@@ -153,62 +153,62 @@ def calculate_mao(args):
     
     # 2. Calculate Annual Revenue & Expenses
     annual_rent = args.rent * 12
-    pm_fee = annual_rent * 0.10
     maint = annual_rent * 0.05
     vacancy = annual_rent * 0.05
     capex = annual_rent * 0.05
     
+    # Property Management is typically calculated as a percentage of COLLECTED rent (Gross - Vacancy)
+    pm_fee = (annual_rent - vacancy) * 0.10
+    
     total_expenses = pm_fee + maint + vacancy + capex + args.taxes + args.insurance
     noi = annual_rent - total_expenses
     
-    # 3. Calculate max allowable End-Buyer Purchase Price algebraically
+    # 3. Calculate max allowable offer (MAO) algebraically
     factor = calculate_mortgage_factor(bh_interest_rate, 30)
-    
     effective_rehab_bh = args.rehab
     
-    # In DealCheck, the rehab is NOT financed. The Base Loan is just 80% of Purchase Price.
-    # Base_Loan = Purchase_Price * 0.80
-    # The 2% origination fee is FINANCED into the loan.
-    # Total_Loan = Base_Loan * 1.02 = Purchase_Price * 0.816
-    # Annual_Debt_Service = Total_Loan * factor = Purchase_Price * 0.816 * factor
+    # Based on DealCheck, the "Purchase Price" inputted into the platform is the Seller's acquisition cost (MAO).
+    # The Wholesale Fee is separated out entirely as a Cash Purchase Cost.
+    # Therefore:
+    # Base_Loan = MAO * 0.80
+    # Financed 2% Origination = (MAO * 0.80) * 0.02 = MAO * 0.016
+    # Total_Loan = MAO * 0.816
+    # Annual_Debt_Service = Total_Loan * factor = MAO * 0.816 * factor
     
-    # Total_Cash_Invested = Down_Payment + Rehab + Title_Escrow + Wholesale_Fee
-    # Down_Payment = MAO * 0.20
-    # Total_Cash_Invested = MAO * 0.20 + effective_rehab_bh + title_escrow_fee + args.wholesale_fee
+    # Total_Cash_Invested = Down_Payment + Rehab + Title + Wholesale_Fee
+    # Total_Cash_Invested = (MAO * 0.20) + effective_rehab_bh + title_escrow_fee + args.wholesale_fee
     
     # Target Cash Flow = Total_Cash_Invested * target_coc
-    
     # Target Cash Flow = NOI - Annual_Debt_Service
-    # Target Cash Flow = NOI - Annual_Debt_Service
-    # (bh_end_buyer_price * 0.20 + effective_rehab_bh + title_escrow_fee) * target_coc = noi - (bh_end_buyer_price * 0.816 * factor)
+    # NOI - (MAO * 0.816 * factor) = ((MAO * 0.20) + effective_rehab_bh + title_escrow_fee + args.wholesale_fee) * target_coc
     
-    # Algebra:
-    # bh_end_buyer_price * (0.20 * target_coc + 0.816 * factor) = noi - (effective_rehab_bh + title_escrow_fee) * target_coc
+    # Algebraic Solve for MAO:
+    # NOI - (effective_rehab_bh + title_escrow_fee + args.wholesale_fee) * target_coc = MAO * ((0.816 * factor) + (0.20 * target_coc))
     
     denominator = (0.20 * target_coc) + (0.816 * factor)
-    numerator = noi - ((effective_rehab_bh + title_escrow_fee) * target_coc)
+    numerator = noi - ((effective_rehab_bh + title_escrow_fee + args.wholesale_fee) * target_coc)
     
-    bh_end_buyer_price = numerator / denominator
-    bh_mao = bh_end_buyer_price - args.wholesale_fee
+    bh_mao = numerator / denominator
+    bh_end_buyer_price = bh_mao + args.wholesale_fee
     
     # Calculate resultant loan terms
-    bh_loan_amount = bh_end_buyer_price * 0.816
+    bh_loan_amount = bh_mao * 0.816
     bh_monthly_payment = (bh_loan_amount * factor) / 12
     
     # Calculate resultant cash flow for B&H based on the algebraic target
-    bh_down_payment = bh_end_buyer_price * 0.20
+    bh_down_payment = bh_mao * 0.20
     # Wholesale fee paid in cash upfront
     bh_cash_needed = bh_down_payment + effective_rehab_bh + title_escrow_fee + args.wholesale_fee
     
-    # Because wholesale_fee is inside bh_end_buyer_price, the true total cash invested relies on that logic.
-    bh_annual_cash_flow = bh_cash_needed * target_coc
+    bh_annual_cash_flow = noi - (bh_monthly_payment * 12)
     bh_monthly_cash_flow = bh_annual_cash_flow / 12
-    bh_cap_rate = noi / (bh_end_buyer_price + effective_rehab_bh) if (bh_end_buyer_price + effective_rehab_bh) > 0 else 0
+    bh_cap_rate = noi / (bh_mao + effective_rehab_bh) if (bh_mao + effective_rehab_bh) > 0 else 0
+    bh_coc_return = bh_annual_cash_flow / bh_cash_needed if bh_cash_needed > 0 else 0
     
     # Safety Check: Appraisal Cap
     appraisal_cap = args.arv - effective_rehab_bh
-    capped_end_buyer_price = min(bh_end_buyer_price, appraisal_cap)
-    appraisal_capped_bh_mao = capped_end_buyer_price - args.wholesale_fee
+    capped_mao = min(bh_mao, appraisal_cap)
+    appraisal_capped_bh_mao = capped_mao
     
     # ---------------------------------------------------------
     # BRRRR Calculation (Buy, Rehab, Rent, Refinance, Repeat)
