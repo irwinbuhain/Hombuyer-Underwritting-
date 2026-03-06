@@ -152,19 +152,15 @@ with col2:
     rehab_bh = st.number_input("Rehab Estimate (Buy & Hold)", min_value=0, value=50000, step=5000, format="%d")
 
 st.markdown("### Underwriting Inputs")
-col_c, col_d, col_e = st.columns(3)
+col_c, col_d = st.columns(2)
 with col_c:
     rent = st.number_input("Monthly Rent ($)", min_value=0, value=2000, step=50, format="%d")
 with col_d:
-    manual_taxes = st.number_input("Annual Property Taxes ($)", min_value=0, value=1500, step=100, format="%d")
-with col_e:
-    manual_ins = st.number_input("Annual Insurance ($)", min_value=0, value=800, step=50, format="%d")
-
-neighborhood_class_override = st.selectbox(
-    "Area Grade",
-    options=["No Grade", "A", "B", "C", "D", "F"],
-    index=0
-)
+    neighborhood_class_override = st.selectbox(
+        "Area Grade",
+        options=["No Grade", "A", "B", "C", "D", "F"],
+        index=0
+    )
 
 st.markdown("<br>", unsafe_allow_html=True)
 calc_button = st.button("Calculate MAO")
@@ -241,9 +237,9 @@ if calc_button:
                 if neighborhood_class_override != "No Grade":
                     neighborhood_class = neighborhood_class_override
                 
-                # Use DealCheck input values
-                estimated_taxes = manual_taxes
-                estimated_ins = manual_ins
+                # Auto-calculate baseline taxes and insurance based on ARV
+                estimated_taxes = arv * 0.015
+                estimated_ins = 700
                 
                 args_ff = argparse.Namespace(
                     address=final_address,
