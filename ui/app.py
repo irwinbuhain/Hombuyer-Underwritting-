@@ -60,6 +60,16 @@ st.markdown("""
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
     }
     
+    /* Hide standard number input spinners across all browsers */
+    input[type="number"]::-webkit-inner-spin-button, 
+    input[type="number"]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+    
     /* Input Focus */
     .stTextInput > div > div > input:focus, 
     .stNumberInput > div > div > input:focus,
@@ -268,7 +278,6 @@ if calc_button:
                             <div class="price-label">Buy & Hold MAO</div>
                             <div class="price-value">${bh_mao_val:,.0f}</div>
                             <div style="color: #94a3b8; font-size: 14px;">Rehab budget: ${rehab_bh:,.0f}</div>
-                            <div style="color: #10b981; font-size: 14px; font-weight: bold; margin-top: 5px;">Cash Flow: ${bh_cf:,.0f}/mo</div>
                         </div>
                         """, unsafe_allow_html=True)
                         
