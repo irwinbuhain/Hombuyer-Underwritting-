@@ -183,10 +183,13 @@ components.html(
                 
                 // If it isn't "NaN", update it
                 if(formattedValue !== 'NaN') {
-                    // Calculate change in length for cursor precision
-                    let lengthDiff = formattedValue.length - input.value.length;
                     
-                    input.value = formattedValue;
+                    let finalValue = cleanValue ? '$ ' + formattedValue : '';
+                    
+                    // Calculate change in length for cursor precision
+                    let lengthDiff = finalValue.length - input.value.length;
+                    
+                    input.value = finalValue;
                     
                     // Restore cursor smoothly
                     input.setSelectionRange(cursorPostion + lengthDiff, cursorPostion + lengthDiff);
@@ -226,30 +229,30 @@ def format_currency_input(key):
             if clean_val == '':
                 st.session_state[key] = ""
             else:
-                st.session_state[key] = f"{int(float(clean_val)):,}"
+                st.session_state[key] = f"$ {int(float(clean_val)):,}"
         except ValueError:
             pass
 
-arv_str = st.text_input("After Repair Value (ARV) ($)", key="arv_input", on_change=format_currency_input, args=("arv_input",))
+arv_str = st.text_input("After Repair Value (ARV)", key="arv_input", on_change=format_currency_input, args=("arv_input",))
 arv_override = parse_currency(arv_str)
 
 col1, col2 = st.columns(2)
 with col1:
-    rehab_ff_str = st.text_input("Rehab Estimate (Fix & Flip) ($)", key="rehab_ff_input", on_change=format_currency_input, args=("rehab_ff_input",))
+    rehab_ff_str = st.text_input("Rehab Estimate (Fix & Flip)", key="rehab_ff_input", on_change=format_currency_input, args=("rehab_ff_input",))
     rehab_ff = parse_currency(rehab_ff_str)
 with col2:
-    rehab_bh_str = st.text_input("Rehab Estimate (Buy & Hold) ($)", key="rehab_bh_input", on_change=format_currency_input, args=("rehab_bh_input",))
+    rehab_bh_str = st.text_input("Rehab Estimate (Buy & Hold)", key="rehab_bh_input", on_change=format_currency_input, args=("rehab_bh_input",))
     rehab_bh = parse_currency(rehab_bh_str)
 
 col_c, col_d, col_e, col_f, col_g = st.columns(5)
 with col_c:
-    rent_str = st.text_input("Rent ($)", key="rent_input", on_change=format_currency_input, args=("rent_input",))
+    rent_str = st.text_input("Rent", key="rent_input", on_change=format_currency_input, args=("rent_input",))
     rent = parse_currency(rent_str)
 with col_d:
-    taxes_str = st.text_input("Taxes ($)", key="taxes_input", on_change=format_currency_input, args=("taxes_input",))
+    taxes_str = st.text_input("Taxes", key="taxes_input", on_change=format_currency_input, args=("taxes_input",))
     manual_taxes = parse_currency(taxes_str)
 with col_e:
-    ins_str = st.text_input("Ins. ($)", key="ins_input", on_change=format_currency_input, args=("ins_input",))
+    ins_str = st.text_input("Ins.", key="ins_input", on_change=format_currency_input, args=("ins_input",))
     manual_ins = parse_currency(ins_str)
 with col_f:
     neighborhood_class_override = st.selectbox(
@@ -258,7 +261,7 @@ with col_f:
         index=0
     )
 with col_g:
-    ws_str = st.text_input("Wholesale Fee ($)", key="ws_input", on_change=format_currency_input, args=("ws_input",))
+    ws_str = st.text_input("Wholesale Fee", key="ws_input", on_change=format_currency_input, args=("ws_input",))
     wholesale_fee_input = parse_currency(ws_str)
 
 st.markdown("<br>", unsafe_allow_html=True)
