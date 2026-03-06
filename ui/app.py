@@ -9,6 +9,9 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 
+import importlib
+import execution.calculate_mao
+importlib.reload(execution.calculate_mao)
 from execution.calculate_mao import calculate_mao
 import argparse
 import streamlit.components.v1 as components
