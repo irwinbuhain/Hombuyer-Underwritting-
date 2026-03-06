@@ -108,15 +108,19 @@ def calculate_mao(args):
     # We still use the effective_rehab to account for 10% overrun safety padding
     effective_rehab = args.rehab * 1.10
     
-    ff_end_buyer_price = (args.arv * 0.70) - effective_rehab
+    # End Buyer Price + (End_Buyer_Price * Realtor Commission) = ARV * 0.70 - Effective Rehab
+    # End_Buyer_Price * (1 + realtor_commission) = ARV * 0.70 - Effective Rehab
+    ff_end_buyer_price = ((args.arv * 0.70) - effective_rehab) / (1 + args.realtor_commission)
     ff_mao = ff_end_buyer_price - args.wholesale_fee
     
     # Calculate detailed flip metrics
+    # Realtor Commission is paid at purchase, adding to cash needed and total costs
+    ff_realtor_cost = ff_end_buyer_price * args.realtor_commission
     ff_loan = 0.80 * (ff_end_buyer_price + effective_rehab)
-    ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + (0.02 * ff_loan)
+    ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + ff_realtor_cost + (0.02 * ff_loan)
     ff_holding_costs = ff_loan * 0.05
     ff_selling_costs = args.arv * 0.075
-    ff_total_costs = ff_end_buyer_price + effective_rehab + title_escrow_fee + (0.02 * ff_loan) + ff_holding_costs + ff_selling_costs
+    ff_total_costs = ff_end_buyer_price + effective_rehab + title_escrow_fee + ff_realtor_cost + (0.02 * ff_loan) + ff_holding_costs + ff_selling_costs
     ff_total_profit = args.arv - ff_total_costs
     ff_roi = ff_total_profit / ff_cash_needed if ff_cash_needed > 0 else 0
     ff_annualized_roi = ff_roi * 2
@@ -168,21 +172,22 @@ def calculate_mao(args):
     # Target Cash Flow = Total_Cash_Invested * target_coc
     
     # Target Cash Flow = NOI - Annual_Debt_Service
-    # (MAO * 0.20 + effective_rehab_bh + title_escrow_fee + args.wholesale_fee) * target_coc = noi - (MAO * 0.816 * factor)
+    # Cash needed includes the down payment + rehab + title_escrow + Realtor Commission
+    # (bh_end_buyer_price * 0.20 + effective_rehab_bh + title_escrow_fee + bh_end_buyer_price * args.realtor_commission) * target_coc = noi - (bh_end_buyer_price * 0.816 * factor)
     
     # Algebra:
-    # MAO * 0.20 * target_coc + (effective_rehab_bh + title_escrow_fee + args.wholesale_fee) * target_coc = noi - MAO * 0.816 * factor
-    # MAO * (0.20 * target_coc + 0.816 * factor) = noi - (effective_rehab_bh + title_escrow_fee + args.wholesale_fee) * target_coc
+    # bh_end_buyer_price * (0.20 * target_coc + args.realtor_commission * target_coc + 0.816 * factor) = noi - (effective_rehab_bh + title_escrow_fee) * target_coc
     
-    denominator = (0.20 * target_coc) + (0.816 * factor)
-    numerator = noi - ((effective_rehab_bh + title_escrow_fee + args.wholesale_fee) * target_coc)
+    denominator = (0.20 * target_coc) + (args.realtor_commission * target_coc) + (0.816 * factor)
+    numerator = noi - ((effective_rehab_bh + title_escrow_fee) * target_coc)
     
-    bh_mao = numerator / denominator
-    bh_end_buyer_price = bh_mao + args.wholesale_fee
+    bh_end_buyer_price = numerator / denominator
+    bh_mao = bh_end_buyer_price - args.wholesale_fee
     
     # Calculate resultant cash flow for B&H based on the algebraic target
+    bh_realtor_cost = bh_end_buyer_price * args.realtor_commission
     bh_down_payment = bh_end_buyer_price * 0.20
-    bh_cash_needed = bh_down_payment + effective_rehab_bh + title_escrow_fee
+    bh_cash_needed = bh_down_payment + effective_rehab_bh + title_escrow_fee + bh_realtor_cost
     
     # Because wholesale_fee is inside bh_end_buyer_price, the true total cash invested relies on that logic.
     bh_annual_cash_flow = bh_cash_needed * target_coc
@@ -205,14 +210,17 @@ def calculate_mao(args):
     
     cash_out_target = 20000
     
-    # All-In Cost = Purchase Price + Effective Rehab + Title/Escrow + Holding Costs + Refinance Costs
+    # All-In Cost = Purchase Price + effective_rehab_brrrr + title_escrow_fee + (purchase_price * realtor_commission) + holding_costs + refinance_costs
     # To pull $20k cash out: All-In Cost + $20,000 <= Refinance Loan
-    # Therefore: Purchase Price = (ARV * 0.80) - Effective Rehab - Title/Escrow(1000) - holding_costs(5% of rehab) - Refinance Costs - $20,000
+    # Purchase Price + (Purchase Price * realtor_commission) = (ARV * 0.80) - effective_rehab - Title/Escrow - holding_costs - Refinance Costs - $20,000
     refinance_amount = args.arv * 0.80
     refinance_costs = args.arv * 0.03
-    brrrr_end_buyer_price = refinance_amount - effective_rehab_brrrr - title_escrow_fee - (0.05 * effective_rehab_brrrr) - refinance_costs - cash_out_target
+    brrrr_rhs = refinance_amount - effective_rehab_brrrr - title_escrow_fee - (0.05 * effective_rehab_brrrr) - refinance_costs - cash_out_target
+    
+    brrrr_end_buyer_price = brrrr_rhs / (1 + args.realtor_commission)
     brrrr_mao = brrrr_end_buyer_price - args.wholesale_fee
     
+    brrrr_realtor_cost = brrrr_end_buyer_price * args.realtor_commission
     brrrr_annual_debt_service = refinance_amount * factor
     brrrr_annual_cash_flow = noi - brrrr_annual_debt_service
     brrrr_monthly_cash_flow = brrrr_annual_cash_flow / 12
@@ -251,7 +259,7 @@ def calculate_mao(args):
     # Calculate True Cash on Cash (Yield on $20k minimum)
     actual_coc = brrrr_annual_cash_flow / cash_out_target if cash_out_target > 0 else 0
     brrrr_coc = actual_coc
-    brrrr_cash_needed = (brrrr_end_buyer_price * 0.20) + effective_rehab_brrrr + title_escrow_fee + (0.02 * (brrrr_end_buyer_price * 0.8))
+    brrrr_cash_needed = (brrrr_end_buyer_price * 0.20) + effective_rehab_brrrr + title_escrow_fee + brrrr_realtor_cost + (0.02 * (brrrr_end_buyer_price * 0.8))
     brrrr_cap_rate = noi / (brrrr_end_buyer_price + effective_rehab_brrrr) if (brrrr_end_buyer_price + effective_rehab_brrrr) > 0 else 0
     
     return {
@@ -333,6 +341,7 @@ def main():
     group.add_argument("--neighborhood-name", type=str, help="Neighborhood name to auto-lookup from references/neighborhoods.md")
     
     parser.add_argument("--wholesale-fee", type=float, default=10000, help="Target Wholesale Assignment Fee (Default: 10000)")
+    parser.add_argument("--realtor-commission", type=float, default=0.0, help="Realtor Commission as a Decimal %% (Default: 0.0)")
     parser.add_argument("--interest-rate", type=float, default=0.07, help="30-yr Mortgage Rate (Default: 0.07)")
     parser.add_argument("--taxes", type=float, default=1200, help="Annual Property Taxes (Default: 1200, but should be passed from DealCheck)")
     parser.add_argument("--insurance", type=float, default=1000, help="Annual Landlord Insurance (Default: 1000, but should be passed from DealCheck)")
