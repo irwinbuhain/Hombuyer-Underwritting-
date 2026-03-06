@@ -111,6 +111,16 @@ def calculate_mao(args):
     ff_end_buyer_price = (args.arv * 0.70) - effective_rehab
     ff_mao = ff_end_buyer_price - args.wholesale_fee
     
+    # Calculate detailed flip metrics
+    ff_loan = 0.80 * (ff_end_buyer_price + effective_rehab)
+    ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + (0.02 * ff_loan)
+    ff_holding_costs = ff_loan * 0.05
+    ff_selling_costs = args.arv * 0.075
+    ff_total_costs = ff_end_buyer_price + effective_rehab + title_escrow_fee + (0.02 * ff_loan) + ff_holding_costs + ff_selling_costs
+    ff_total_profit = args.arv - ff_total_costs
+    ff_roi = ff_total_profit / ff_cash_needed if ff_cash_needed > 0 else 0
+    ff_annualized_roi = ff_roi * 2
+    
     # ---------------------------------------------------------
     # Buy and Hold Calculation
     # ---------------------------------------------------------
@@ -172,9 +182,12 @@ def calculate_mao(args):
     
     # Calculate resultant cash flow for B&H based on the algebraic target
     bh_down_payment = bh_end_buyer_price * 0.20
-    bh_total_cash_invested = bh_down_payment + effective_rehab_bh + title_escrow_fee + args.wholesale_fee
-    bh_annual_cash_flow = bh_total_cash_invested * target_coc
+    bh_cash_needed = bh_down_payment + effective_rehab_bh + title_escrow_fee
+    
+    # Because wholesale_fee is inside bh_end_buyer_price, the true total cash invested relies on that logic.
+    bh_annual_cash_flow = bh_cash_needed * target_coc
     bh_monthly_cash_flow = bh_annual_cash_flow / 12
+    bh_cap_rate = noi / (bh_end_buyer_price + effective_rehab_bh) if (bh_end_buyer_price + effective_rehab_bh) > 0 else 0
     
     # Safety Check: Appraisal Cap
     appraisal_cap = args.arv - effective_rehab_bh
@@ -237,7 +250,9 @@ def calculate_mao(args):
             
     # Calculate True Cash on Cash (Yield on $20k minimum)
     actual_coc = brrrr_annual_cash_flow / cash_out_target if cash_out_target > 0 else 0
-    brrrr_coc = f"{actual_coc * 100:.1f}%"
+    brrrr_coc = actual_coc
+    brrrr_cash_needed = (brrrr_end_buyer_price * 0.20) + effective_rehab_brrrr + title_escrow_fee + (0.02 * (brrrr_end_buyer_price * 0.8))
+    brrrr_cap_rate = noi / (brrrr_end_buyer_price + effective_rehab_brrrr) if (brrrr_end_buyer_price + effective_rehab_brrrr) > 0 else 0
     
     return {
         "inputs": vars(args),
@@ -251,7 +266,11 @@ def calculate_mao(args):
             "fix_and_flip": {
                 "end_buyer_max_purchase_price": round(ff_end_buyer_price, 2),
                 "mao": round(ff_mao, 2),
-                "formula": "Purchase = [ARV - 7.5% Selling - 15% Profit Target - Effective Rehab(1.10x) - 5.6% F&F Loan Costs - $1000 Title/Escrow] / 1.056",
+                "cash_needed": round(ff_cash_needed, 2),
+                "total_profit": round(ff_total_profit, 2),
+                "roi": round(ff_roi, 4),
+                "annualized_roi": round(ff_annualized_roi, 4),
+                "formula": "Purchase = (ARV * 0.70) - Effective Rehab - Wholesale Fee",
                 "assumptions": {
                     "down_payment": "20%",
                     "interest_rate": "10%",
@@ -265,8 +284,10 @@ def calculate_mao(args):
             "buy_and_hold_yield_based": {
                 "end_buyer_max_purchase_price": round(bh_end_buyer_price, 2),
                 "mao": round(bh_mao, 2),
+                "cash_needed": round(bh_cash_needed, 2),
                 "monthly_cash_flow": round(bh_monthly_cash_flow, 2),
-                "coc_return": f"{int(target_coc * 100)}%",
+                "coc_return": round(target_coc, 4),
+                "cap_rate": round(bh_cap_rate, 4),
                 "is_capped_by_appraisal": bh_end_buyer_price > appraisal_cap,
                 "mao_after_appraisal_cap": round(appraisal_capped_bh_mao, 2),
                 "assumptions": {
@@ -283,8 +304,11 @@ def calculate_mao(args):
             "brrrr": {
                 "end_buyer_max_purchase_price": round(brrrr_end_buyer_price, 2),
                 "mao": round(brrrr_mao, 2),
+                "cash_needed": round(brrrr_cash_needed, 2),
+                "cash_out_profit": round(cash_out_target, 2),
                 "monthly_cash_flow": round(brrrr_monthly_cash_flow, 2),
-                "coc_return": brrrr_coc,
+                "coc_return": brrrr_coc if isinstance(brrrr_coc, str) else round(brrrr_coc, 4),
+                "cap_rate": round(brrrr_cap_rate, 4),
                 "formula": "Purchase = (ARV * 80%) - Effective Rehab(1.10x) - $1000 Title/Escrow - 5% Holding Costs - 3% ARV Refi Costs",
                 "assumptions": {
                     "refinance_ltv": "80%",
