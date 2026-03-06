@@ -113,7 +113,8 @@ def calculate_mao(args):
     # Calculate detailed flip metrics
     ff_loan = 0.80 * (ff_end_buyer_price + effective_rehab)
     ff_monthly_payment = (ff_loan * 0.10) / 12
-    ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + (0.02 * ff_loan)
+    # To the end-buyer, the wholesale assignment fee is paid completely in cash at closing. It cannot be financed into the LTV.
+    ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + (0.02 * ff_loan) + args.wholesale_fee
     ff_holding_costs = ff_loan * 0.05
     ff_selling_costs = args.arv * 0.075
     ff_total_costs = ff_cash_needed + ff_loan + ff_holding_costs + ff_selling_costs
@@ -185,7 +186,8 @@ def calculate_mao(args):
     
     # Calculate resultant cash flow for B&H based on the algebraic target
     bh_down_payment = bh_end_buyer_price * 0.20
-    bh_cash_needed = bh_down_payment + effective_rehab_bh + title_escrow_fee
+    # Wholesale fee paid in cash upfront
+    bh_cash_needed = bh_down_payment + effective_rehab_bh + title_escrow_fee + args.wholesale_fee
     
     # Because wholesale_fee is inside bh_end_buyer_price, the true total cash invested relies on that logic.
     bh_annual_cash_flow = bh_cash_needed * target_coc
@@ -254,7 +256,8 @@ def calculate_mao(args):
     # Calculate True Cash on Cash (Yield on $20k minimum)
     actual_coc = brrrr_annual_cash_flow / cash_out_target if cash_out_target > 0 else 0
     brrrr_coc = actual_coc
-    brrrr_cash_needed = (brrrr_end_buyer_price * 0.20) + effective_rehab_brrrr + title_escrow_fee + (0.02 * (brrrr_end_buyer_price * 0.8))
+    # Wholesale fee paid in cash upfront
+    brrrr_cash_needed = (brrrr_end_buyer_price * 0.20) + effective_rehab_brrrr + title_escrow_fee + (0.02 * (brrrr_end_buyer_price * 0.8)) + args.wholesale_fee
     brrrr_cap_rate = noi / (brrrr_end_buyer_price + effective_rehab_brrrr) if (brrrr_end_buyer_price + effective_rehab_brrrr) > 0 else 0
     
     return {
