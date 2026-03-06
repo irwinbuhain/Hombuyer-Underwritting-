@@ -347,7 +347,7 @@ if calc_button:
                     
                     with st.expander("Calculation Breakdown", expanded=False):
                         ff_res = res_ff['results']['fix_and_flip']
-                        st.markdown(f"**Formula**: {ff_res['formula']}")
+                        st.markdown("**Formula**: 75% ARV - Rehab - Wholesale Fee")
                         st.markdown(f"**Max Purchase Price**: ${ff_res['end_buyer_max_purchase_price']:,.0f}")
                         st.markdown(f"**Total Cash Needed**: ${ff_res['cash_needed']:,.0f}")
                         st.markdown(f"**Total Profit**: ${ff_res['total_profit']:,.0f}")
@@ -404,7 +404,7 @@ if calc_button:
 
                         with st.expander("Calculation Breakdown", expanded=False):
                             brrrr_res = res_bh['results']['brrrr']
-                            st.markdown(f"**Formula**: {brrrr_res['formula']}")
+                            st.markdown("**Formula**: 75% ARV - Rehab - Wholesale Fee")
                             st.markdown(f"**Max Purchase Price**: ${brrrr_res['end_buyer_max_purchase_price']:,.0f}")
                             st.markdown(f"**Cash Needed**: ${brrrr_res['cash_needed']:,.0f}")
                             st.markdown(f"**Cash Out/Profit**: ${brrrr_res['cash_out_profit']:,.0f}")
