@@ -184,17 +184,20 @@ def calculate_mao(args):
     # ---------------------------------------------------------
     # BRRRR Calculation (Buy, Rehab, Rent, Refinance, Repeat)
     # ---------------------------------------------------------
-    # Target: Investor leaves $0 in the deal after refinance.
+    # Target: Investor pulls $20,000 CASH OUT of the deal after refinance.
     # Refinance Loan amount = 80% of ARV
     # Refinance Costs = 3% of ARV
     # Universal 10% Rehab Cost Overrun
     effective_rehab_brrrr = args.rehab * 1.10
+    
+    cash_out_target = 20000
+    
     # All-In Cost = Purchase Price + Effective Rehab + Title/Escrow + Holding Costs + Refinance Costs
-    # To leave $0 in the deal: All-In Cost <= Refinance Loan
-    # Therefore: Purchase Price = (ARV * 0.80) - Effective Rehab - Title/Escrow(1000) - holding_costs(5% of rehab) - Refinance Costs
+    # To pull $20k cash out: All-In Cost + $20,000 <= Refinance Loan
+    # Therefore: Purchase Price = (ARV * 0.80) - Effective Rehab - Title/Escrow(1000) - holding_costs(5% of rehab) - Refinance Costs - $20,000
     refinance_amount = args.arv * 0.80
     refinance_costs = args.arv * 0.03
-    brrrr_end_buyer_price = refinance_amount - effective_rehab_brrrr - title_escrow_fee - (0.05 * effective_rehab_brrrr) - refinance_costs
+    brrrr_end_buyer_price = refinance_amount - effective_rehab_brrrr - title_escrow_fee - (0.05 * effective_rehab_brrrr) - refinance_costs - cash_out_target
     brrrr_mao = brrrr_end_buyer_price - args.wholesale_fee
     
     brrrr_annual_debt_service = refinance_amount * factor

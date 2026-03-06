@@ -310,16 +310,17 @@ if calc_button:
                     st.info(f"Calculates exact Purchase Price allowing {target_coc:,.0f}% ROI on all cash left in the deal (Down Payment + Effective Rehab + Fees).")
                     
                 with scol3:
-                    st.markdown("**BRRRR Math ($0 Left in Deal)**")
+                    st.markdown("**BRRRR Math ($20k Cash Out)**")
                     st.write(f"- **Refinance Loan (80% ARV):** ${(arv * 0.80):,.0f}")
                     st.write(f"- ARV Refinance Costs (3%): -${(arv * 0.03):,.0f}")
                     st.write(f"- Title/Escrow Costs: -$1,000")
                     st.write(f"- 5% Holding Costs: -${(rehab_bh * 0.05):,.0f}")
                     st.write(f"- Effective Rehab (+10% overrun): -${(rehab_bh * 1.10):,.0f}")
+                    st.write(f"- Forced Cash-Out Profit: -$20,000")
                     st.write(f"- Your Wholesale Fee: -$10,000")
                     brrrr_cf = res_bh['results']['brrrr']['monthly_cash_flow']
-                    st.write(f"- **Yield-Based Cash Flow:** ${brrrr_cf:,.0f}/mo")
-                    st.info("Calculates MAO capped entirely by the allowable Refinance Loan minus all rehab, holding, and closing costs.")
+                    st.write(f"- **Post-Refi Cash Flow:** ${brrrr_cf:,.0f}/mo")
+                    st.info("Calculates MAO cleanly ensuring the End-Buyer pulls exactly $20,000 profit out of the property upon refinancing while maintaining positive cash flow.")
                         
             except Exception as e:
                 st.error(f"Error calculating MAO: {e}")
