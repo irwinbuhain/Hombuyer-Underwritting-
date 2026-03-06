@@ -203,7 +203,41 @@ def calculate_mao(args):
     brrrr_annual_debt_service = refinance_amount * factor
     brrrr_annual_cash_flow = noi - brrrr_annual_debt_service
     brrrr_monthly_cash_flow = brrrr_annual_cash_flow / 12
-    brrrr_coc = "Infinite"
+    
+    # ---------------------------------------------------------
+    # BRRRR Override: Minimum 5% Cash-on-Cash (Yield on $20k)
+    # ---------------------------------------------------------
+    # The investor has $20,000 trapped/pulled equity. We want a 5% yield minimum on that $20k.
+    # Required annual cash flow = $20,000 * 0.05 = $1,000/yr.
+    required_annual_cf = cash_out_target * 0.05
+    
+    # If the property does not cash flow at least $1,000/yr naturally:
+    # We must lower the Refinance Loan amount until the debt service drops enough to hit that $1,000 CF mark.
+    # New Max Debt Service = NOI - $1,000
+    if brrrr_annual_cash_flow < required_annual_cf:
+        max_allowable_debt_service = noi - required_annual_cf
+        # If the property can't even carry debt (NOI < $1,000), deal is dead
+        if max_allowable_debt_service <= 0:
+            brrrr_mao = -999999
+            brrrr_annual_cash_flow = max_allowable_debt_service
+            brrrr_monthly_cash_flow = brrrr_annual_cash_flow / 12
+            brrrr_coc = "Dead Deal (Negative NOI)"
+        else:
+            # Drop the loan amount down to fit the new max debt service
+            reduced_refinance_amount = max_allowable_debt_service / factor
+            # Because the loan amount drops, the investor has less cash to buy the house with upfront.
+            # We penalize the MAO dollar-for-dollar by the difference between the 80% ARV loan and this new reduced loan.
+            loan_shortfall = refinance_amount - reduced_refinance_amount
+            brrrr_end_buyer_price -= loan_shortfall
+            brrrr_mao -= loan_shortfall
+            
+            # Recalculate cashflow which will now exactly equal the 5% target
+            brrrr_annual_cash_flow = required_annual_cf
+            brrrr_monthly_cash_flow = brrrr_annual_cash_flow / 12
+            
+    # Calculate True Cash on Cash (Yield on $20k minimum)
+    actual_coc = brrrr_annual_cash_flow / cash_out_target if cash_out_target > 0 else 0
+    brrrr_coc = f"{actual_coc * 100:.1f}%"
     
     return {
         "inputs": vars(args),
