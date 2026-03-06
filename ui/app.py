@@ -139,8 +139,6 @@ st.markdown("<h1>Underwriting Engine</h1>", unsafe_allow_html=True)
 # Centered Clean Inputs
 # ---------------------------------------------------------
 
-st.markdown("### Property Details")
-
 address = st.text_input("Property Address", placeholder="123 Main St, Cleveland, OH")
 
 arv_override = st.number_input("ARV ($)", min_value=0, value=0, step=5000, format="%d", help="Leave 0 to auto-calculate via Redfin")
@@ -151,7 +149,6 @@ with col1:
 with col2:
     rehab_bh = st.number_input("Rehab Estimate (Buy & Hold)", min_value=0, value=50000, step=5000, format="%d")
 
-st.markdown("### Underwriting Inputs")
 col_c, col_d, col_e, col_f = st.columns(4)
 with col_c:
     rent = st.number_input("Monthly Rent ($)", min_value=0, value=2000, step=50, format="%d")
