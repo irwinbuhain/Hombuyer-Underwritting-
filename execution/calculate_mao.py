@@ -116,7 +116,7 @@ def calculate_mao(args):
     ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + (0.02 * ff_loan)
     ff_holding_costs = ff_loan * 0.05
     ff_selling_costs = args.arv * 0.075
-    ff_total_costs = ff_end_buyer_price + effective_rehab + title_escrow_fee + (0.02 * ff_loan) + ff_holding_costs + ff_selling_costs
+    ff_total_costs = ff_cash_needed + ff_loan + ff_holding_costs + ff_selling_costs
     ff_total_profit = args.arv - ff_total_costs
     ff_roi = ff_total_profit / ff_cash_needed if ff_cash_needed > 0 else 0
     ff_annualized_roi = ff_roi * 2
