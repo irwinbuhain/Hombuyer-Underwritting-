@@ -178,6 +178,12 @@ st.markdown("<br>", unsafe_allow_html=True)
 if calc_button:
     if arv_override <= 0:
         st.error("Please enter an ARV greater than $0 to proceed.")
+    elif rent <= 0:
+        st.error("Please enter a Monthly Rent greater than $0 to proceed.")
+    elif manual_taxes <= 0:
+        st.error("Please enter Annual Taxes greater than $0 to proceed.")
+    elif manual_ins <= 0:
+        st.error("Please enter Annual Insurance greater than $0 to proceed.")
     elif neighborhood_class_override == "Select":
         st.error("Please pick an Area Grade (A, B, C, D, or F) to proceed.")
     else:
