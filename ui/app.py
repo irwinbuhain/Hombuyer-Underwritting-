@@ -246,13 +246,13 @@ with col2:
 
 col_c, col_d, col_e, col_f, col_g = st.columns(5)
 with col_c:
-    rent_str = st.text_input("Rent (Monthly)", key="rent_input", on_change=format_currency_input, args=("rent_input",))
+    rent_str = st.text_input("Rent / Month", key="rent_input", on_change=format_currency_input, args=("rent_input",))
     rent = parse_currency(rent_str)
 with col_d:
-    taxes_str = st.text_input("Taxes (Annual)", key="taxes_input", on_change=format_currency_input, args=("taxes_input",))
+    taxes_str = st.text_input("Taxes / Year", key="taxes_input", on_change=format_currency_input, args=("taxes_input",))
     manual_taxes = parse_currency(taxes_str)
 with col_e:
-    ins_str = st.text_input("Insurance (Annual)", key="ins_input", on_change=format_currency_input, args=("ins_input",))
+    ins_str = st.text_input("Insurance / Year", key="ins_input", on_change=format_currency_input, args=("ins_input",))
     manual_ins = parse_currency(ins_str)
 with col_f:
     neighborhood_class_override = st.selectbox(
