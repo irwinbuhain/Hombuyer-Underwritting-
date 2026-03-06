@@ -156,21 +156,21 @@ st.markdown("<h1>Underwriting Engine</h1>", unsafe_allow_html=True)
 # Centered Clean Inputs
 # ---------------------------------------------------------
 
-arv_override = st.number_input("After Repair Value (ARV) ($)", min_value=0, value=None, step=5000)
+arv_override = st.number_input("After Repair Value (ARV) ($)", min_value=0.0, value=None, step=None, format="%0.2f")
 
 col1, col2 = st.columns(2)
 with col1:
-    rehab_ff = st.number_input("Rehab Estimate (Fix & Flip)", min_value=0, value=None, step=5000)
+    rehab_ff = st.number_input("Rehab Estimate (Fix & Flip)", min_value=0.0, value=None, step=None, format="%0.2f")
 with col2:
-    rehab_bh = st.number_input("Rehab Estimate (Buy & Hold)", min_value=0, value=None, step=5000)
+    rehab_bh = st.number_input("Rehab Estimate (Buy & Hold)", min_value=0.0, value=None, step=None, format="%0.2f")
 
 col_c, col_d, col_e, col_f, col_g = st.columns(5)
 with col_c:
-    rent = st.number_input("Rent ($)", min_value=0, value=None, step=50)
+    rent = st.number_input("Rent ($)", min_value=0.0, value=None, step=None, format="%0.2f")
 with col_d:
-    manual_taxes = st.number_input("Taxes ($)", min_value=0, value=None, step=100)
+    manual_taxes = st.number_input("Taxes ($)", min_value=0.0, value=None, step=None, format="%0.2f")
 with col_e:
-    manual_ins = st.number_input("Ins. ($)", min_value=0, value=None, step=50)
+    manual_ins = st.number_input("Ins. ($)", min_value=0.0, value=None, step=None, format="%0.2f")
 with col_f:
     neighborhood_class_override = st.selectbox(
         "Grade",
@@ -178,7 +178,7 @@ with col_f:
         index=0
     )
 with col_g:
-    wholesale_fee_input = st.number_input("Wholesale Fee ($)", min_value=0, value=None, step=1000)
+    wholesale_fee_input = st.number_input("Wholesale Fee ($)", min_value=0.0, value=None, step=None, format="%0.2f")
 
 st.markdown("<br>", unsafe_allow_html=True)
 calc_button = st.button("Calculate MAO")
