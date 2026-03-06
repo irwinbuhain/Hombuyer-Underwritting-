@@ -19,39 +19,54 @@ st.markdown("""
     <style>
     /* Main Background */
     .stApp {
-        background-color: #f8fafc;
+        background-color: #0f1115;
         font-family: 'Inter', sans-serif;
+        color: #e2e8f0;
     }
     
-    /* Headers */
+    /* Headers & Markdown Text */
     h1 {
-        color: #0f172a;
+        color: #f8fafc;
         font-weight: 800 !important;
         text-align: center;
         padding-bottom: 20px;
     }
+    h2, h3, h4, p, li, span, div {
+        color: #cbd5e1;
+    }
     h3 {
-        color: #334155;
+        color: #f1f5f9;
         font-weight: 600 !important;
+        margin-top: 1rem;
     }
     
     /* Input Fields Container Styling */
     .stTextInput > div > div > input, 
-    .stNumberInput > div > div > input {
-        background-color: white;
-        border: 1px solid #e2e8f0;
+    .stNumberInput > div > div > input,
+    .stSelectbox > div > div > div {
+        background-color: #1e242d;
+        border: 1px solid #334155;
         border-radius: 8px;
+        color: #f8fafc;
         padding: 12px 16px;
         font-size: 16px;
-        color: #1e293b;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
     }
     
     /* Input Focus */
     .stTextInput > div > div > input:focus, 
-    .stNumberInput > div > div > input:focus {
+    .stNumberInput > div > div > input:focus,
+    .stSelectbox > div > div > div:focus {
         border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+    }
+    
+    /* Dropdown elements */
+    ul[data-testid="stSelectboxVirtualDropdown"] {
+        background-color: #1e242d;
+    }
+    li[data-testid="stSelectboxVirtualDropdownItem"] {
+        color: #f8fafc;
     }
     
     /* Primary Button Styling (RentCast Blue) */
@@ -69,30 +84,18 @@ st.markdown("""
     }
     
     .stButton > button:hover {
-        background-color: #1d4ed8 !important;
-        box-shadow: 0 6px 8px -1px rgba(37, 99, 235, 0.3);
+        background-color: #3b82f6 !important;
+        box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.3);
         transform: translateY(-1px);
-    }
-    
-    /* Metrics Display Cards */
-    [data-testid="stMetricValue"] {
-        font-size: 2.5rem !important;
-        font-weight: 700 !important;
-        color: #0f172a !important;
-    }
-    [data-testid="stMetricLabel"] {
-        font-size: 1.1rem !important;
-        color: #64748b !important;
-        font-weight: 500 !important;
     }
     
     /* Custom Cards for Results */
     .result-card {
-        background: white;
+        background: #171d25;
         padding: 24px;
         border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        border: 1px solid #f1f5f9;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+        border: 1px solid #2a3340;
         margin-top: 16px;
         text-align: center;
     }
@@ -100,16 +103,31 @@ st.markdown("""
     .price-value {
         font-size: 36px;
         font-weight: 800;
-        color: #2563eb;
+        color: #60a5fa;
         margin: 10px 0;
     }
     
     .price-label {
-        color: #64748b;
+        color: #94a3b8;
         font-size: 16px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+    }
+    
+    /* Override Streamlit's default info/success/warning boxes */
+    .stAlert {
+        background-color: #1e242d;
+        color: #f8fafc;
+        border: 1px solid #334155;
+    }
+    
+    /* Override Streamlit Tabs */
+    button[data-baseweb="tab"] {
+        color: #94a3b8 !important;
+    }
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: #f8fafc !important;
     }
     
     </style>
@@ -304,10 +322,10 @@ if calc_button:
                     
                     if bh_mao_val < 0:
                         st.markdown(f"""
-                        <div class="result-card" style="border-color: #ef4444; background-color: #fef2f2;">
-                            <div class="price-label" style="color: #dc2626;">Buy & Hold MAO</div>
-                            <div class="price-value" style="color: #ef4444; font-size: 24px; padding: 10px 0;">Dead Deal</div>
-                            <div style="color: #ef4444; font-size: 14px;">Rent cannot cover debt service</div>
+                        <div class="result-card" style="border-color: #7f1d1d; background-color: #450a0a;">
+                            <div class="price-label" style="color: #fca5a5;">Buy & Hold MAO</div>
+                            <div class="price-value" style="color: #f87171; font-size: 24px; padding: 10px 0;">Dead Deal</div>
+                            <div style="color: #fca5a5; font-size: 14px;">Rent cannot cover debt service</div>
                         </div>
                         """, unsafe_allow_html=True)
                     else:
@@ -326,10 +344,10 @@ if calc_button:
                     
                     if brrrr_mao_val < 0:
                         st.markdown(f"""
-                        <div class="result-card" style="border-color: #ef4444; background-color: #fef2f2;">
-                            <div class="price-label" style="color: #dc2626;">BRRRR MAO</div>
-                            <div class="price-value" style="color: #ef4444; font-size: 24px; padding: 10px 0;">Dead Deal</div>
-                            <div style="color: #ef4444; font-size: 14px;">Cannot hit 75% LTV</div>
+                        <div class="result-card" style="border-color: #7f1d1d; background-color: #450a0a;">
+                            <div class="price-label" style="color: #fca5a5;">BRRRR MAO</div>
+                            <div class="price-value" style="color: #f87171; font-size: 24px; padding: 10px 0;">Dead Deal</div>
+                            <div style="color: #fca5a5; font-size: 14px;">Cannot hit 80% LTV</div>
                         </div>
                         """, unsafe_allow_html=True)
                     else:
