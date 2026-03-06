@@ -302,7 +302,6 @@ if calc_button:
                 scol1, scol2, scol3 = st.columns(3)
                 with scol1:
                     st.markdown("**Fix & Flip Breakdown**")
-                    st.write(f"- **Cash Needed:** ${res_ff['results']['fix_and_flip']['cash_needed']:,.0f}")
                     st.write(f"- **Total Profit:** ${res_ff['results']['fix_and_flip']['total_profit']:,.0f}")
                     roi = res_ff['results']['fix_and_flip']['roi'] * 100
                     st.write(f"- **ROI:** {roi:,.1f}%")
@@ -311,7 +310,6 @@ if calc_button:
                     
                 with scol2:
                     st.markdown("**Buy & Hold Breakdown**")
-                    st.write(f"- **Cash Needed:** ${res_bh['results']['buy_and_hold_yield_based']['cash_needed']:,.0f}")
                     st.write(f"- **Cash Flow:** ${res_bh['results']['buy_and_hold_yield_based']['monthly_cash_flow']:,.0f}/mo")
                     cap_rate = res_bh['results']['buy_and_hold_yield_based']['cap_rate'] * 100
                     st.write(f"- **Cap Rate:** {cap_rate:,.1f}%")
@@ -320,7 +318,6 @@ if calc_button:
                     
                 with scol3:
                     st.markdown("**BRRRR Breakdown**")
-                    st.write(f"- **Cash Needed:** ${res_bh['results']['brrrr']['cash_needed']:,.0f}")
                     st.write(f"- **Cash Out:** ${res_bh['results']['brrrr']['cash_out_profit']:,.0f}")
                     brrrr_cf = res_bh['results']['brrrr']['monthly_cash_flow']
                     st.write(f"- **Cash Flow:** ${brrrr_cf:,.0f}/mo")
