@@ -152,9 +152,13 @@ with col2:
     rehab_bh = st.number_input("Rehab Estimate (Buy & Hold)", min_value=0, value=50000, step=5000, format="%d")
 
 st.markdown("### Underwriting Inputs")
-col_c, col_d = st.columns(2)
+col_c, col_d, col_e = st.columns(3)
 with col_c:
     rent = st.number_input("Monthly Rent ($)", min_value=0, value=2000, step=50, format="%d")
+with col_d:
+    manual_taxes = st.number_input("DealCheck Taxes ($)", min_value=0, value=1500, step=100, format="%d")
+with col_e:
+    manual_ins = st.number_input("DealCheck Insurance ($)", min_value=0, value=800, step=50, format="%d")
 
 st.markdown("<br>", unsafe_allow_html=True)
 calc_button = st.button("Calculate MAO")
@@ -227,9 +231,9 @@ if calc_button:
                               
                      st.success(f"📍 **Neighborhood identified:** {neighborhood} (API Class {neighborhood_class})")
                 
-                # Auto-calculate baseline taxes and insurance based on ARV
-                estimated_taxes = arv * 0.015
-                estimated_ins = 700
+                # Use precise DealCheck input values
+                estimated_taxes = manual_taxes
+                estimated_ins = manual_ins
                 
                 args_ff = argparse.Namespace(
                     address=final_address,
