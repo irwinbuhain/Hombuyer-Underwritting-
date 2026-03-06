@@ -11,6 +11,7 @@ sys.path.append(parent_dir)
 
 from execution.calculate_mao import calculate_mao
 import argparse
+import streamlit.components.v1 as components
 
 st.set_page_config(page_title="MAO Calculator", page_icon="🏢", layout="centered")
 
@@ -151,6 +152,56 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 st.markdown("<h1>Underwriting Engine</h1>", unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# Realtime JS Comma Formatter
+# ---------------------------------------------------------
+components.html(
+    """
+    <script>
+    const doc = window.parent.document;
+    
+    function formatCurrency(e) {
+        let input = e.target;
+        
+        // Only target the text inputs we care about
+        if(input.tagName === 'INPUT' && input.type === 'text') {
+            
+            // Get cursor position
+            let cursorPostion = input.selectionStart;
+            
+            // Get raw value without commas
+            let rawValue = input.value.replace(/,/g, '');
+            
+            // Only format if there are numbers
+            if(rawValue !== '') {
+                // Ensure only numbers and one decimal exist
+                let cleanValue = rawValue.replace(/[^\d.]/g, '');
+                
+                // Format with commas 
+                let formattedValue = Number(cleanValue).toLocaleString('en-US');
+                
+                // If it isn't "NaN", update it
+                if(formattedValue !== 'NaN') {
+                    // Calculate change in length for cursor precision
+                    let lengthDiff = formattedValue.length - input.value.length;
+                    
+                    input.value = formattedValue;
+                    
+                    // Restore cursor smoothly
+                    input.setSelectionRange(cursorPostion + lengthDiff, cursorPostion + lengthDiff);
+                }
+            }
+        }
+    }
+
+    // Attach to the entire wrapping section
+    doc.addEventListener('keyup', formatCurrency, true);
+    </script>
+    """,
+    height=0,
+    width=0,
+)
 
 # ---------------------------------------------------------
 # Centered Clean Inputs
