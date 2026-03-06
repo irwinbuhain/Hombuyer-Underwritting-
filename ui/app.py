@@ -80,6 +80,10 @@ st.markdown("""
     }
     
     /* Dropdown elements */
+    .stSelectbox input {
+        caret-color: transparent !important;
+        cursor: pointer !important;
+    }
     ul[data-testid="stSelectboxVirtualDropdown"] {
         background-color: #1e242d;
     }
