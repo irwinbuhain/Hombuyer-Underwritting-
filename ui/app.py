@@ -93,7 +93,9 @@ st.markdown("""
         color: white !important;
         border: none !important;
         border-radius: 8px !important;
-        padding: 14px 24px !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        padding: 0 !important;
         font-weight: 600 !important;
         font-size: 16px !important;
         width: 100% !important;
