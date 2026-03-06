@@ -107,15 +107,20 @@ def calculate_mao(args):
     
     effective_rehab = args.rehab
     
-    ff_end_buyer_price = (args.arv * 0.75) - effective_rehab
-    ff_mao = ff_end_buyer_price - args.wholesale_fee
+    # The End-Buyer's contract purchase price is the MAO. The wholesale fee is a standalone closing cost.
+    ff_mao = (args.arv * 0.75) - effective_rehab - args.wholesale_fee
+    ff_end_buyer_price = ff_mao
     
-    # Calculate detailed flip metrics
+    # Calculate detailed flip metrics based strictly on the MAO Contract Price
     ff_loan = 0.80 * (ff_end_buyer_price + effective_rehab)
     ff_monthly_payment = (ff_loan * 0.10) / 12
-    # To the end-buyer, the wholesale assignment fee is paid completely in cash at closing. It cannot be financed into the LTV.
+    
+    # The wholesale assignment fee is paid completely in cash at closing. It cannot be financed into the LTV.
     ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + (0.02 * ff_loan) + args.wholesale_fee
-    ff_holding_costs = ff_loan * 0.05
+    
+    # Holding costs (Includes 6mo of taxes & insurance to accurately match DealCheck holding schedules)
+    ff_holding_costs = (ff_loan * 0.05) + ((args.taxes + args.insurance) / 2)
+    
     ff_selling_costs = args.arv * 0.075
     ff_total_costs = ff_cash_needed + ff_loan + ff_holding_costs + ff_selling_costs
     ff_total_profit = args.arv - ff_total_costs
