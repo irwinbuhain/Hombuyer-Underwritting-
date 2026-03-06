@@ -164,8 +164,8 @@ with col_e:
 with col_f:
     neighborhood_class_override = st.selectbox(
         "Grade",
-        options=["A", "B", "C", "D", "F"],
-        index=2
+        options=["Select", "A", "B", "C", "D", "F"],
+        index=0
     )
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -178,6 +178,8 @@ st.markdown("<br>", unsafe_allow_html=True)
 if calc_button:
     if arv_override <= 0:
         st.error("Please enter an ARV greater than $0 to proceed.")
+    elif neighborhood_class_override == "Select":
+        st.error("Please pick an Area Grade (A, B, C, D, or F) to proceed.")
     else:
         with st.spinner("🔍 Calculating MAO..."):
             try:
