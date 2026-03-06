@@ -152,13 +152,19 @@ with col2:
     rehab_bh = st.number_input("Rehab Estimate (Buy & Hold)", min_value=0, value=50000, step=5000, format="%d")
 
 st.markdown("### Underwriting Inputs")
-col_c, col_d, col_e = st.columns(3)
+col_c, col_d, col_e, col_f = st.columns(4)
 with col_c:
     rent = st.number_input("Monthly Rent ($)", min_value=0, value=2000, step=50, format="%d")
 with col_d:
     manual_taxes = st.number_input("DealCheck Taxes ($)", min_value=0, value=1500, step=100, format="%d")
 with col_e:
     manual_ins = st.number_input("DealCheck Insurance ($)", min_value=0, value=800, step=50, format="%d")
+with col_f:
+    neighborhood_class_override = st.selectbox(
+        "Area Grade",
+        options=["No Grade", "A", "B", "C", "D", "F"],
+        index=0
+    )
 
 st.markdown("<br>", unsafe_allow_html=True)
 calc_button = st.button("Calculate MAO")
@@ -230,6 +236,10 @@ if calc_button:
                           arv = 150000
                               
                      st.success(f"📍 **Neighborhood identified:** {neighborhood} (API Class {neighborhood_class})")
+                
+                # Apply map override for area grade if provided
+                if neighborhood_class_override != "No Grade":
+                    neighborhood_class = neighborhood_class_override
                 
                 # Use precise DealCheck input values
                 estimated_taxes = manual_taxes
