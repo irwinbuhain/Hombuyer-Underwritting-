@@ -84,9 +84,9 @@ st.markdown("""
         color: #f8fafc;
     }
     
-    /* Primary Button Styling (RentCast Blue) */
+    /* Primary Button Styling (Red) */
     .stButton > button {
-        background-color: #2563eb !important;
+        background-color: #dc2626 !important;
         color: white !important;
         border: none !important;
         border-radius: 8px !important;
@@ -97,12 +97,12 @@ st.markdown("""
         font-size: 16px !important;
         width: 100% !important;
         transition: all 0.2s ease;
-        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.2);
     }
     
     .stButton > button:hover {
-        background-color: #3b82f6 !important;
-        box-shadow: 0 6px 8px -1px rgba(59, 130, 246, 0.3);
+        background-color: #ef4444 !important;
+        box-shadow: 0 6px 8px -1px rgba(239, 68, 68, 0.3);
         transform: translateY(-1px);
     }
     
