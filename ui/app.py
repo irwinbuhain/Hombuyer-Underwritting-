@@ -357,6 +357,13 @@ if calc_button:
                         st.markdown(f"**ROI**: {ff_res['roi']*100:,.1f}%")
                         
                         st.markdown("---")
+                        st.markdown("**Lending Breakdown**")
+                        ff_lb = ff_res.get('lending_breakdown', {})
+                        st.markdown(f"- Loan Amount (80%): ${ff_lb.get('loan_amount', 0):,.0f}")
+                        st.markdown(f"- Interest Rate: {ff_lb.get('interest_rate', 0)*100:,.1f}%")
+                        st.markdown(f"- Monthly Payment: ${ff_lb.get('monthly_payment', 0):,.0f}")
+                        
+                        st.markdown("---")
                         st.markdown("**Revenue**")
                         st.markdown(f"Sale Price (ARV): ${arv_override:,.0f}")
                         
@@ -396,6 +403,13 @@ if calc_button:
                             st.markdown(f"**Cash Needed**: ${bh_res['cash_needed']:,.0f}")
                             st.markdown(f"**Monthly Cash Flow**: ${bh_res['monthly_cash_flow']:,.0f}")
                             st.markdown(f"**CoC Return**: {bh_res['coc_return']*100:,.1f}%")
+                            
+                            st.markdown("---")
+                            st.markdown("**Lending Breakdown**")
+                            bh_lb = bh_res.get('lending_breakdown', {})
+                            st.markdown(f"- Loan Amount (80%): ${bh_lb.get('loan_amount', 0):,.0f}")
+                            st.markdown(f"- Interest Rate: {bh_lb.get('interest_rate', 0)*100:,.1f}%")
+                            st.markdown(f"- Monthly Payment: ${bh_lb.get('monthly_payment', 0):,.0f}")
                             
                             st.markdown("---")
                             st.markdown("**Annual Revenue**")
@@ -440,6 +454,13 @@ if calc_button:
                             st.markdown(f"**Cash Out/Profit**: ${brrrr_res['cash_out_profit']:,.0f}")
                             st.markdown(f"**Monthly Cash Flow**: ${brrrr_res['monthly_cash_flow']:,.0f}")
                             st.markdown(f"**CoC Return**: {brrrr_res['coc_return']*100:,.1f}%")
+                            
+                            st.markdown("---")
+                            st.markdown("**Lending Breakdown (Refinance)**")
+                            brrrr_lb = brrrr_res.get('lending_breakdown', {})
+                            st.markdown(f"- Target Refi Loan (80% ARV): ${brrrr_lb.get('loan_amount', 0):,.0f}")
+                            st.markdown(f"- Interest Rate: {brrrr_lb.get('interest_rate', 0)*100:,.1f}%")
+                            st.markdown(f"- Monthly Payment: ${brrrr_lb.get('monthly_payment', 0):,.0f}")
                             
                             st.markdown("---")
                             st.markdown("**Annual Revenue**")

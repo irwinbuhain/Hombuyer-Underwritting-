@@ -112,6 +112,7 @@ def calculate_mao(args):
     
     # Calculate detailed flip metrics
     ff_loan = 0.80 * (ff_end_buyer_price + effective_rehab)
+    ff_monthly_payment = (ff_loan * 0.10) / 12
     ff_cash_needed = (0.20 * (ff_end_buyer_price + effective_rehab)) + title_escrow_fee + (0.02 * ff_loan)
     ff_holding_costs = ff_loan * 0.05
     ff_selling_costs = args.arv * 0.075
@@ -178,6 +179,10 @@ def calculate_mao(args):
     bh_end_buyer_price = numerator / denominator
     bh_mao = bh_end_buyer_price - args.wholesale_fee
     
+    # Calculate resultant loan terms
+    bh_loan_amount = bh_end_buyer_price * 0.816
+    bh_monthly_payment = (bh_loan_amount * factor) / 12
+    
     # Calculate resultant cash flow for B&H based on the algebraic target
     bh_down_payment = bh_end_buyer_price * 0.20
     bh_cash_needed = bh_down_payment + effective_rehab_bh + title_escrow_fee
@@ -211,6 +216,7 @@ def calculate_mao(args):
     
     brrrr_mao = brrrr_end_buyer_price - args.wholesale_fee
     brrrr_annual_debt_service = refinance_amount * factor
+    brrrr_monthly_payment = brrrr_annual_debt_service / 12
     brrrr_annual_cash_flow = noi - brrrr_annual_debt_service
     brrrr_monthly_cash_flow = brrrr_annual_cash_flow / 12
     
@@ -282,6 +288,11 @@ def calculate_mao(args):
                     "title_escrow_fee": title_escrow_fee,
                     "wholesale_fee": args.wholesale_fee
                 },
+                "lending_breakdown": {
+                    "loan_amount": round(ff_loan, 2),
+                    "interest_rate": 0.10,
+                    "monthly_payment": round(ff_monthly_payment, 2)
+                },
                 "formula": "Purchase = (ARV * 0.75) - Effective Rehab - Wholesale Fee",
                 "assumptions": {
                     "down_payment": "20%",
@@ -300,6 +311,11 @@ def calculate_mao(args):
                 "monthly_cash_flow": round(bh_monthly_cash_flow, 2),
                 "coc_return": round(target_coc, 4),
                 "cap_rate": round(bh_cap_rate, 4),
+                "lending_breakdown": {
+                    "loan_amount": round(bh_loan_amount, 2),
+                    "interest_rate": bh_interest_rate,
+                    "monthly_payment": round(bh_monthly_payment, 2)
+                },
                 "is_capped_by_appraisal": bh_end_buyer_price > appraisal_cap,
                 "mao_after_appraisal_cap": round(appraisal_capped_bh_mao, 2),
                 "assumptions": {
@@ -321,6 +337,11 @@ def calculate_mao(args):
                 "monthly_cash_flow": round(brrrr_monthly_cash_flow, 2),
                 "coc_return": brrrr_coc if isinstance(brrrr_coc, str) else round(brrrr_coc, 4),
                 "cap_rate": round(brrrr_cap_rate, 4),
+                "lending_breakdown": {
+                    "loan_amount": round(refinance_amount, 2),
+                    "interest_rate": bh_interest_rate,
+                    "monthly_payment": round(brrrr_monthly_payment, 2)
+                },
                 "formula": "Purchase = (ARV * 0.75) - Effective Rehab - Wholesale Fee",
                 "assumptions": {
                     "refinance_ltv": "80%",
