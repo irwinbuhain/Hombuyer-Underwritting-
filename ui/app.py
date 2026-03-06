@@ -154,7 +154,7 @@ with col1:
 with col2:
     rehab_bh = st.number_input("Rehab Estimate (Buy & Hold)", min_value=0, value=50000, step=5000, format="%d")
 
-col_c, col_d, col_e, col_f, col_g, col_h = st.columns(6)
+col_c, col_d, col_e, col_f, col_g = st.columns(5)
 with col_c:
     rent = st.number_input("Rent ($)", min_value=0, value=2000, step=50, format="%d")
 with col_d:
@@ -169,8 +169,6 @@ with col_f:
     )
 with col_g:
     wholesale_fee_input = st.number_input("Wholesale Fee ($)", min_value=0, value=10000, step=1000, format="%d")
-with col_h:
-    realtor_comm_input = st.number_input("Realtor Comm (%)", min_value=0.0, max_value=20.0, value=0.0, step=0.5, format="%.1f")
 
 st.markdown("<br>", unsafe_allow_html=True)
 calc_button = st.button("Calculate MAO")
@@ -217,7 +215,6 @@ if calc_button:
                     taxes=estimated_taxes,
                     insurance=estimated_ins,
                     wholesale_fee=wholesale_fee_input,
-                    realtor_commission=(realtor_comm_input / 100),
                     interest_rate=0.07 
                 )
                 
@@ -231,7 +228,6 @@ if calc_button:
                     taxes=estimated_taxes,
                     insurance=estimated_ins,
                     wholesale_fee=wholesale_fee_input,
-                    realtor_commission=(realtor_comm_input / 100),
                     interest_rate=0.07 
                 )
 
