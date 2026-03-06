@@ -139,37 +139,11 @@ st.markdown("<h1>Underwriting Engine</h1>", unsafe_allow_html=True)
 # Centered Clean Inputs
 # ---------------------------------------------------------
 
-# Try loading map addresses
-map_addrs = []
-try:
-    with open(os.path.join(parent_dir, 'redfin-comps', 'references', 'map_addresses_clean.json'), 'r') as f:
-        map_addrs = json.load(f)
-except Exception:
-    pass
-
 st.markdown("### Property Details")
 
-if "property_address" not in st.session_state:
-    st.session_state.property_address = ""
+address = st.text_input("Property Address", placeholder="123 Main St, Cleveland, OH")
 
-def map_selection_changed():
-    if st.session_state.map_selector != "":
-        st.session_state.property_address = st.session_state.map_selector
-
-st.selectbox(
-    "Quick Select from HomeBuyer+ Map (Optional)", 
-    options=[""] + map_addrs,
-    key="map_selector",
-    on_change=map_selection_changed
-)
-
-address = st.text_input("Property Address", value=st.session_state.property_address, key="address_input")
-
-col_a, col_b = st.columns(2)
-with col_a:
-    arv_override = st.number_input("Override ARV (0 = Auto Redfin)", min_value=0, value=0, step=5000, format="%d")
-with col_b:
-    bedrooms_override = st.number_input("Bedrooms (0 = Auto Detect)", min_value=0, value=0, step=1, format="%d")
+arv_override = st.number_input("ARV ($)", min_value=0, value=0, step=5000, format="%d", help="Leave 0 to auto-calculate via Redfin")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -177,20 +151,19 @@ with col1:
 with col2:
     rehab_bh = st.number_input("Rehab Estimate (Buy & Hold)", min_value=0, value=50000, step=5000, format="%d")
 
-st.markdown("### DealCheck & Google Maps Underwriting Inputs")
+st.markdown("### Underwriting Inputs")
 col_c, col_d, col_e = st.columns(3)
 with col_c:
-    rent = st.number_input("Target Monthly Rent ($)", min_value=0, value=2000, step=50, format="%d")
+    rent = st.number_input("Monthly Rent ($)", min_value=0, value=2000, step=50, format="%d")
 with col_d:
-    manual_taxes = st.number_input("DealCheck Prop Taxes ($)", min_value=0, value=1500, step=100, format="%d")
+    manual_taxes = st.number_input("Annual Property Taxes ($)", min_value=0, value=1500, step=100, format="%d")
 with col_e:
-    manual_ins = st.number_input("DealCheck Insurance ($)", min_value=0, value=800, step=50, format="%d")
+    manual_ins = st.number_input("Annual Insurance ($)", min_value=0, value=800, step=50, format="%d")
 
 neighborhood_class_override = st.selectbox(
-    "Google Maps Area Grade",
-    options=["Auto-detect", "A", "B", "C", "D", "F"],
-    index=0,
-    help="Check the custom Google Map. Overrides the auto-detected Redfin API grade."
+    "Area Grade",
+    options=["No Grade", "A", "B", "C", "D", "F"],
+    index=0
 )
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -232,8 +205,6 @@ if calc_button:
                              "--property-type", "any",
                              "--output", json_path
                          ]
-                         if bedrooms_override > 0:
-                             cmd.extend(["--subject-beds", str(bedrooms_override)])
                          
                          subprocess.run(cmd, capture_output=True, text=True)
                          
@@ -267,7 +238,7 @@ if calc_button:
                      st.success(f"📍 **Neighborhood identified:** {neighborhood} (API Class {neighborhood_class})")
                 
                 # Apply map override for area grade if provided
-                if neighborhood_class_override != "Auto-detect":
+                if neighborhood_class_override != "No Grade":
                     neighborhood_class = neighborhood_class_override
                 
                 # Use DealCheck input values
