@@ -155,12 +155,6 @@ st.markdown("### Underwriting Inputs")
 col_c, col_d = st.columns(2)
 with col_c:
     rent = st.number_input("Monthly Rent ($)", min_value=0, value=2000, step=50, format="%d")
-with col_d:
-    neighborhood_class_override = st.selectbox(
-        "Area Grade",
-        options=["No Grade", "A", "B", "C", "D", "F"],
-        index=0
-    )
 
 st.markdown("<br>", unsafe_allow_html=True)
 calc_button = st.button("Calculate MAO")
@@ -232,10 +226,6 @@ if calc_button:
                           arv = 150000
                               
                      st.success(f"📍 **Neighborhood identified:** {neighborhood} (API Class {neighborhood_class})")
-                
-                # Apply map override for area grade if provided
-                if neighborhood_class_override != "No Grade":
-                    neighborhood_class = neighborhood_class_override
                 
                 # Auto-calculate baseline taxes and insurance based on ARV
                 estimated_taxes = arv * 0.015
