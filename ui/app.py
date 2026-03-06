@@ -156,21 +156,38 @@ st.markdown("<h1>Underwriting Engine</h1>", unsafe_allow_html=True)
 # Centered Clean Inputs
 # ---------------------------------------------------------
 
-arv_override = st.number_input("After Repair Value (ARV) ($)", min_value=0.0, value=None, step=None, format="%0.2f")
+def parse_currency(val):
+    if not val:
+        return None
+    try:
+        clean_val = str(val).replace('$', '').replace(',', '').strip()
+        if clean_val == '':
+            return None
+        return float(clean_val)
+    except ValueError:
+        return None
+
+arv_str = st.text_input("After Repair Value (ARV) ($)", value="")
+arv_override = parse_currency(arv_str)
 
 col1, col2 = st.columns(2)
 with col1:
-    rehab_ff = st.number_input("Rehab Estimate (Fix & Flip)", min_value=0.0, value=None, step=None, format="%0.2f")
+    rehab_ff_str = st.text_input("Rehab Estimate (Fix & Flip) ($)", value="")
+    rehab_ff = parse_currency(rehab_ff_str)
 with col2:
-    rehab_bh = st.number_input("Rehab Estimate (Buy & Hold)", min_value=0.0, value=None, step=None, format="%0.2f")
+    rehab_bh_str = st.text_input("Rehab Estimate (Buy & Hold) ($)", value="")
+    rehab_bh = parse_currency(rehab_bh_str)
 
 col_c, col_d, col_e, col_f, col_g = st.columns(5)
 with col_c:
-    rent = st.number_input("Rent ($)", min_value=0.0, value=None, step=None, format="%0.2f")
+    rent_str = st.text_input("Rent ($)", value="")
+    rent = parse_currency(rent_str)
 with col_d:
-    manual_taxes = st.number_input("Taxes ($)", min_value=0.0, value=None, step=None, format="%0.2f")
+    taxes_str = st.text_input("Taxes ($)", value="")
+    manual_taxes = parse_currency(taxes_str)
 with col_e:
-    manual_ins = st.number_input("Ins. ($)", min_value=0.0, value=None, step=None, format="%0.2f")
+    ins_str = st.text_input("Ins. ($)", value="")
+    manual_ins = parse_currency(ins_str)
 with col_f:
     neighborhood_class_override = st.selectbox(
         "Grade",
@@ -178,7 +195,8 @@ with col_f:
         index=0
     )
 with col_g:
-    wholesale_fee_input = st.number_input("Wholesale Fee ($)", min_value=0.0, value=None, step=None, format="%0.2f")
+    ws_str = st.text_input("Wholesale Fee ($)", value="")
+    wholesale_fee_input = parse_currency(ws_str)
 
 st.markdown("<br>", unsafe_allow_html=True)
 calc_button = st.button("Calculate MAO")
