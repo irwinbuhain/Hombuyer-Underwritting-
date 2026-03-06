@@ -75,8 +75,9 @@ st.markdown("""
     .stTextInput > div > div > input:focus, 
     .stNumberInput > div > div > input:focus,
     .stSelectbox > div > div > div:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+        border-color: #334155 !important;
+        box-shadow: none !important;
+        outline: none !important;
     }
     
     /* Dropdown elements */
