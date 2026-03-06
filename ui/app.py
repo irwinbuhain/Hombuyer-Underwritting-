@@ -355,6 +355,18 @@ if calc_button:
                         st.markdown(f"**Total Cash Needed**: ${ff_res['cash_needed']:,.0f}")
                         st.markdown(f"**Total Profit**: ${ff_res['total_profit']:,.0f}")
                         st.markdown(f"**ROI**: {ff_res['roi']*100:,.1f}%")
+                        
+                        st.markdown("---")
+                        st.markdown("**Revenue**")
+                        st.markdown(f"Sale Price (ARV): ${arv_override:,.0f}")
+                        
+                        st.markdown("**Expenses**")
+                        ff_cb = ff_res.get('costs_breakdown', {})
+                        st.markdown(f"- Rehab: ${ff_cb.get('rehab', 0):,.0f}")
+                        st.markdown(f"- Wholesale Fee: ${ff_cb.get('wholesale_fee', 0):,.0f}")
+                        st.markdown(f"- Title & Escrow: ${ff_cb.get('title_escrow_fee', 0):,.0f}")
+                        st.markdown(f"- Holding Costs (6mo): ${ff_cb.get('holding_costs', 0):,.0f}")
+                        st.markdown(f"- Selling Costs (7.5%): ${ff_cb.get('selling_costs', 0):,.0f}")
                     
                 with col2:
                     bh_mao_val = res_bh['results']['buy_and_hold_yield_based']['mao']
@@ -384,6 +396,21 @@ if calc_button:
                             st.markdown(f"**Cash Needed**: ${bh_res['cash_needed']:,.0f}")
                             st.markdown(f"**Monthly Cash Flow**: ${bh_res['monthly_cash_flow']:,.0f}")
                             st.markdown(f"**CoC Return**: {bh_res['coc_return']*100:,.1f}%")
+                            
+                            st.markdown("---")
+                            st.markdown("**Annual Revenue**")
+                            st.markdown(f"Gross Rent: ${res_bh['financials']['annual_gross_rent']:,.0f}")
+                            
+                            st.markdown("**Annual Expenses**")
+                            exp = res_bh['financials']['expenses_breakdown']
+                            st.markdown(f"- Taxes: ${exp['taxes']:,.0f}")
+                            st.markdown(f"- Insurance: ${exp['insurance']:,.0f}")
+                            st.markdown(f"- Property Mgmt: ${exp['property_management_fee']:,.0f}")
+                            st.markdown(f"- Maintenance: ${exp['maintenance']:,.0f}")
+                            st.markdown(f"- Vacancy: ${exp['vacancy']:,.0f}")
+                            st.markdown(f"- CapEx: ${exp['capex']:,.0f}")
+                            st.markdown(f"**Total Expenses**: ${res_bh['financials']['annual_expenses']:,.0f}")
+                            st.markdown(f"**NOI**: ${res_bh['financials']['net_operating_income']:,.0f}")
                         
                 with col3:
                     brrrr_mao_val = res_bh['results']['brrrr']['mao']
@@ -413,6 +440,21 @@ if calc_button:
                             st.markdown(f"**Cash Out/Profit**: ${brrrr_res['cash_out_profit']:,.0f}")
                             st.markdown(f"**Monthly Cash Flow**: ${brrrr_res['monthly_cash_flow']:,.0f}")
                             st.markdown(f"**CoC Return**: {brrrr_res['coc_return']*100:,.1f}%")
+                            
+                            st.markdown("---")
+                            st.markdown("**Annual Revenue**")
+                            st.markdown(f"Gross Rent: ${res_bh['financials']['annual_gross_rent']:,.0f}")
+                            
+                            st.markdown("**Annual Expenses**")
+                            exp = res_bh['financials']['expenses_breakdown']
+                            st.markdown(f"- Taxes: ${exp['taxes']:,.0f}")
+                            st.markdown(f"- Insurance: ${exp['insurance']:,.0f}")
+                            st.markdown(f"- Property Mgmt: ${exp['property_management_fee']:,.0f}")
+                            st.markdown(f"- Maintenance: ${exp['maintenance']:,.0f}")
+                            st.markdown(f"- Vacancy: ${exp['vacancy']:,.0f}")
+                            st.markdown(f"- CapEx: ${exp['capex']:,.0f}")
+                            st.markdown(f"**Total Expenses**: ${res_bh['financials']['annual_expenses']:,.0f}")
+                            st.markdown(f"**NOI**: ${res_bh['financials']['net_operating_income']:,.0f}")
                 
 
                         

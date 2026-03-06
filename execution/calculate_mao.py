@@ -256,6 +256,14 @@ def calculate_mao(args):
         "financials": {
             "annual_gross_rent": annual_rent,
             "annual_expenses": total_expenses,
+            "expenses_breakdown": {
+                "property_management_fee": pm_fee,
+                "maintenance": maint,
+                "vacancy": vacancy,
+                "capex": capex,
+                "taxes": args.taxes,
+                "insurance": args.insurance
+            },
             "net_operating_income": noi,
             "target_coc_return": target_coc
         },
@@ -267,6 +275,13 @@ def calculate_mao(args):
                 "total_profit": round(ff_total_profit, 2),
                 "roi": round(ff_roi, 4),
                 "annualized_roi": round(ff_annualized_roi, 4),
+                "costs_breakdown": {
+                    "rehab": effective_rehab,
+                    "holding_costs": round(ff_holding_costs, 2),
+                    "selling_costs": round(ff_selling_costs, 2),
+                    "title_escrow_fee": title_escrow_fee,
+                    "wholesale_fee": args.wholesale_fee
+                },
                 "formula": "Purchase = (ARV * 0.75) - Effective Rehab - Wholesale Fee",
                 "assumptions": {
                     "down_payment": "20%",
