@@ -345,6 +345,14 @@ if calc_button:
                     </div>
                     """, unsafe_allow_html=True)
                     
+                    with st.expander("Calculation Breakdown", expanded=False):
+                        ff_res = res_ff['results']['fix_and_flip']
+                        st.markdown(f"**Formula**: {ff_res['formula']}")
+                        st.markdown(f"**Max Purchase Price**: ${ff_res['end_buyer_max_purchase_price']:,.0f}")
+                        st.markdown(f"**Total Cash Needed**: ${ff_res['cash_needed']:,.0f}")
+                        st.markdown(f"**Total Profit**: ${ff_res['total_profit']:,.0f}")
+                        st.markdown(f"**ROI**: {ff_res['roi']*100:,.1f}%")
+                    
                 with col2:
                     bh_mao_val = res_bh['results']['buy_and_hold_yield_based']['mao']
                     
@@ -366,6 +374,14 @@ if calc_button:
                         </div>
                         """, unsafe_allow_html=True)
                         
+                        with st.expander("Calculation Breakdown", expanded=False):
+                            bh_res = res_bh['results']['buy_and_hold_yield_based']
+                            st.markdown(f"**Formula**: Yield-Based (Target {res_bh['financials']['target_coc_return']*100:,.1f}%)")
+                            st.markdown(f"**Max Purchase Price**: ${bh_res['end_buyer_max_purchase_price']:,.0f}")
+                            st.markdown(f"**Cash Needed**: ${bh_res['cash_needed']:,.0f}")
+                            st.markdown(f"**Monthly Cash Flow**: ${bh_res['monthly_cash_flow']:,.0f}")
+                            st.markdown(f"**CoC Return**: {bh_res['coc_return']*100:,.1f}%")
+                        
                 with col3:
                     brrrr_mao_val = res_bh['results']['brrrr']['mao']
                     
@@ -385,6 +401,15 @@ if calc_button:
                             <div style="color: #94a3b8; font-size: 14px;">Rehab budget: ${rehab_bh:,.0f}</div>
                         </div>
                         """, unsafe_allow_html=True)
+
+                        with st.expander("Calculation Breakdown", expanded=False):
+                            brrrr_res = res_bh['results']['brrrr']
+                            st.markdown(f"**Formula**: {brrrr_res['formula']}")
+                            st.markdown(f"**Max Purchase Price**: ${brrrr_res['end_buyer_max_purchase_price']:,.0f}")
+                            st.markdown(f"**Cash Needed**: ${brrrr_res['cash_needed']:,.0f}")
+                            st.markdown(f"**Cash Out/Profit**: ${brrrr_res['cash_out_profit']:,.0f}")
+                            st.markdown(f"**Monthly Cash Flow**: ${brrrr_res['monthly_cash_flow']:,.0f}")
+                            st.markdown(f"**CoC Return**: {brrrr_res['coc_return']*100:,.1f}%")
                 
 
                         
