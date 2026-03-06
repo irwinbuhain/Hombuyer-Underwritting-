@@ -167,26 +167,38 @@ def parse_currency(val):
     except ValueError:
         return None
 
-arv_str = st.text_input("After Repair Value (ARV) ($)", value="")
+def format_currency_input(key):
+    val = st.session_state.get(key, "")
+    if val:
+        try:
+            clean_val = str(val).replace('$', '').replace(',', '').strip()
+            if clean_val == '':
+                st.session_state[key] = ""
+            else:
+                st.session_state[key] = f"{int(float(clean_val)):,}"
+        except ValueError:
+            pass
+
+arv_str = st.text_input("After Repair Value (ARV) ($)", key="arv_input", on_change=format_currency_input, args=("arv_input",))
 arv_override = parse_currency(arv_str)
 
 col1, col2 = st.columns(2)
 with col1:
-    rehab_ff_str = st.text_input("Rehab Estimate (Fix & Flip) ($)", value="")
+    rehab_ff_str = st.text_input("Rehab Estimate (Fix & Flip) ($)", key="rehab_ff_input", on_change=format_currency_input, args=("rehab_ff_input",))
     rehab_ff = parse_currency(rehab_ff_str)
 with col2:
-    rehab_bh_str = st.text_input("Rehab Estimate (Buy & Hold) ($)", value="")
+    rehab_bh_str = st.text_input("Rehab Estimate (Buy & Hold) ($)", key="rehab_bh_input", on_change=format_currency_input, args=("rehab_bh_input",))
     rehab_bh = parse_currency(rehab_bh_str)
 
 col_c, col_d, col_e, col_f, col_g = st.columns(5)
 with col_c:
-    rent_str = st.text_input("Rent ($)", value="")
+    rent_str = st.text_input("Rent ($)", key="rent_input", on_change=format_currency_input, args=("rent_input",))
     rent = parse_currency(rent_str)
 with col_d:
-    taxes_str = st.text_input("Taxes ($)", value="")
+    taxes_str = st.text_input("Taxes ($)", key="taxes_input", on_change=format_currency_input, args=("taxes_input",))
     manual_taxes = parse_currency(taxes_str)
 with col_e:
-    ins_str = st.text_input("Ins. ($)", value="")
+    ins_str = st.text_input("Ins. ($)", key="ins_input", on_change=format_currency_input, args=("ins_input",))
     manual_ins = parse_currency(ins_str)
 with col_f:
     neighborhood_class_override = st.selectbox(
@@ -195,7 +207,7 @@ with col_f:
         index=0
     )
 with col_g:
-    ws_str = st.text_input("Wholesale Fee ($)", value="")
+    ws_str = st.text_input("Wholesale Fee ($)", key="ws_input", on_change=format_currency_input, args=("ws_input",))
     wholesale_fee_input = parse_currency(ws_str)
 
 st.markdown("<br>", unsafe_allow_html=True)
