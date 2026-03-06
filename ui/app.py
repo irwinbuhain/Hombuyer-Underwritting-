@@ -233,7 +233,7 @@ def format_currency_input(key):
         except ValueError:
             pass
 
-arv_str = st.text_input("After Repair Value (ARV)", key="arv_input", on_change=format_currency_input, args=("arv_input",))
+arv_str = st.text_input("After Repair Value", key="arv_input", on_change=format_currency_input, args=("arv_input",))
 arv_override = parse_currency(arv_str)
 
 col1, col2 = st.columns(2)
@@ -246,17 +246,17 @@ with col2:
 
 col_c, col_d, col_e, col_f, col_g = st.columns(5)
 with col_c:
-    rent_str = st.text_input("Rent", key="rent_input", on_change=format_currency_input, args=("rent_input",))
+    rent_str = st.text_input("Rent (Monthly)", key="rent_input", on_change=format_currency_input, args=("rent_input",))
     rent = parse_currency(rent_str)
 with col_d:
-    taxes_str = st.text_input("Taxes", key="taxes_input", on_change=format_currency_input, args=("taxes_input",))
+    taxes_str = st.text_input("Taxes (Annual)", key="taxes_input", on_change=format_currency_input, args=("taxes_input",))
     manual_taxes = parse_currency(taxes_str)
 with col_e:
-    ins_str = st.text_input("Ins.", key="ins_input", on_change=format_currency_input, args=("ins_input",))
+    ins_str = st.text_input("Insurance (Annual)", key="ins_input", on_change=format_currency_input, args=("ins_input",))
     manual_ins = parse_currency(ins_str)
 with col_f:
     neighborhood_class_override = st.selectbox(
-        "Grade",
+        "Area Grade",
         options=["Select", "A", "B", "C", "D", "F"],
         index=0
     )
@@ -265,7 +265,7 @@ with col_g:
     wholesale_fee_input = parse_currency(ws_str)
 
 st.markdown("<br>", unsafe_allow_html=True)
-calc_button = st.button("Calculate MAO")
+calc_button = st.button("Calculate MAO", use_container_width=True)
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
