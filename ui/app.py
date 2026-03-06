@@ -153,13 +153,13 @@ col_c, col_d, col_e, col_f = st.columns(4)
 with col_c:
     rent = st.number_input("Monthly Rent ($)", min_value=0, value=2000, step=50, format="%d")
 with col_d:
-    manual_taxes = st.number_input("DealCheck Taxes ($)", min_value=0, value=1500, step=100, format="%d")
+    manual_taxes = st.number_input("Annual Taxes ($)", min_value=0, value=1500, step=100, format="%d")
 with col_e:
-    manual_ins = st.number_input("DealCheck Insurance ($)", min_value=0, value=800, step=50, format="%d")
+    manual_ins = st.number_input("Annual Ins. ($)", min_value=0, value=800, step=50, format="%d")
 with col_f:
     neighborhood_class_override = st.selectbox(
         "Area Grade",
-        options=["No Grade", "A", "B", "C", "D", "F"],
+        options=["Auto", "A", "B", "C", "D", "F"],
         index=0
     )
 
@@ -235,7 +235,7 @@ if calc_button:
                      st.success(f"📍 **Neighborhood identified:** {neighborhood} (API Class {neighborhood_class})")
                 
                 # Apply map override for area grade if provided
-                if neighborhood_class_override != "No Grade":
+                if neighborhood_class_override != "Auto":
                     neighborhood_class = neighborhood_class_override
                 
                 # Use precise DealCheck input values
