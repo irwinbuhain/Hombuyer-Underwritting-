@@ -256,28 +256,29 @@ with col2:
     rehab_bh_str = st.text_input("Rehab Estimate (Buy & Hold)", key="rehab_bh_input", on_change=format_currency_input, args=("rehab_bh_input",))
     rehab_bh = parse_currency(rehab_bh_str)
 
-col_c, col_d, col_e = st.columns(3)
-with col_c:
+col_left, col_mid, col_right = st.columns(3)
+
+with col_left:
     rent_str = st.text_input("Rent / Month", key="rent_input", on_change=format_currency_input, args=("rent_input",))
     rent = parse_currency(rent_str)
-with col_d:
-    taxes_str = st.text_input("Taxes / Year", key="taxes_input", on_change=format_currency_input, args=("taxes_input",))
-    manual_taxes = parse_currency(taxes_str)
-with col_e:
-    ins_str = st.text_input("Insurance / Year", key="ins_input", on_change=format_currency_input, args=("ins_input",))
-    manual_ins = parse_currency(ins_str)
-
-col_f, col_g, col_h = st.columns([1.5, 1, 1])
-with col_f:
+    
     neighborhood_class_override = st.selectbox(
         "Area Grade",
         options=["Select", "A", "B", "C", "D", "F"],
         index=0
     )
-with col_g:
+
+with col_mid:
+    taxes_str = st.text_input("Taxes / Year", key="taxes_input", on_change=format_currency_input, args=("taxes_input",))
+    manual_taxes = parse_currency(taxes_str)
+    
     ws_str = st.text_input("Wholesale Fee", key="ws_input", on_change=format_currency_input, args=("ws_input",))
     wholesale_fee_input = parse_currency(ws_str)
-with col_h:
+
+with col_right:
+    ins_str = st.text_input("Insurance / Year", key="ins_input", on_change=format_currency_input, args=("ins_input",))
+    manual_ins = parse_currency(ins_str)
+    
     realtor_commission_input = st.slider("Realtor Commission (%)", 0.0, 10.0, 0.0, 0.5) / 100.0
 
 st.markdown("<br>", unsafe_allow_html=True)
