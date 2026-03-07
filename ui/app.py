@@ -248,7 +248,7 @@ with col2:
     rehab_bh_str = st.text_input("Rehab Estimate (Buy & Hold)", key="rehab_bh_input", on_change=format_currency_input, args=("rehab_bh_input",))
     rehab_bh = parse_currency(rehab_bh_str)
 
-col_c, col_d, col_e, col_f, col_g = st.columns(5)
+col_c, col_d, col_e = st.columns(3)
 with col_c:
     rent_str = st.text_input("Rent / Month", key="rent_input", on_change=format_currency_input, args=("rent_input",))
     rent = parse_currency(rent_str)
@@ -258,6 +258,8 @@ with col_d:
 with col_e:
     ins_str = st.text_input("Insurance / Year", key="ins_input", on_change=format_currency_input, args=("ins_input",))
     manual_ins = parse_currency(ins_str)
+
+col_f, col_g, col_h = st.columns(3)
 with col_f:
     neighborhood_class_override = st.selectbox(
         "Area Grade",
@@ -267,6 +269,8 @@ with col_f:
 with col_g:
     ws_str = st.text_input("Wholesale Fee", key="ws_input", on_change=format_currency_input, args=("ws_input",))
     wholesale_fee_input = parse_currency(ws_str)
+with col_h:
+    realtor_commission_input = st.slider("Realtor Commission (%)", 0.0, 10.0, 0.0, 0.5) / 100.0
 
 st.markdown("<br>", unsafe_allow_html=True)
 calc_button = st.button("CALCULATE MAO", use_container_width=True)
@@ -315,6 +319,7 @@ if calc_button:
                     taxes=estimated_taxes,
                     insurance=estimated_ins,
                     wholesale_fee=wholesale_fee_input,
+                    realtor_commission=realtor_commission_input,
                     interest_rate=0.07 
                 )
                 
@@ -328,6 +333,7 @@ if calc_button:
                     taxes=estimated_taxes,
                     insurance=estimated_ins,
                     wholesale_fee=wholesale_fee_input,
+                    realtor_commission=realtor_commission_input,
                     interest_rate=0.07 
                 )
 
@@ -372,6 +378,8 @@ if calc_button:
                         st.markdown(f"- Rehab: ${ff_cb.get('rehab', 0):,.0f}")
                         st.markdown(f"- Wholesale Fee: ${ff_cb.get('wholesale_fee', 0):,.0f}")
                         st.markdown(f"- Title & Escrow: ${ff_cb.get('title_escrow_fee', 0):,.0f}")
+                        st.markdown(f"- Wholesale Fee: ${ff_cb.get('wholesale_fee', 0):,.0f}")
+                        st.markdown(f"- Realtor Commission: ${ff_cb.get('realtor_commission_amount', 0):,.0f}")
                         st.markdown(f"- Holding Costs (6mo): ${ff_cb.get('holding_costs', 0):,.0f}")
                         st.markdown(f"- Selling Costs (7.5%): ${ff_cb.get('selling_costs', 0):,.0f}")
                     
@@ -410,6 +418,13 @@ if calc_button:
                             st.markdown(f"- Loan Amount (80%): ${bh_lb.get('loan_amount', 0):,.0f}")
                             st.markdown(f"- Interest Rate: {bh_lb.get('interest_rate', 0)*100:,.1f}%")
                             st.markdown(f"- Monthly Payment: ${bh_lb.get('monthly_payment', 0):,.0f}")
+                            
+                            st.markdown("---")
+                            st.markdown("**Purchase Costs**")
+                            bh_cb = bh_res.get('costs_breakdown', {})
+                            st.markdown(f"- Title & Escrow: ${bh_cb.get('title_escrow_fee', 0):,.0f}")
+                            st.markdown(f"- Wholesale Fee: ${bh_cb.get('wholesale_fee', 0):,.0f}")
+                            st.markdown(f"- Realtor Commission: ${bh_cb.get('realtor_commission_amount', 0):,.0f}")
                             
                             st.markdown("---")
                             st.markdown("**Annual Revenue**")
@@ -461,6 +476,14 @@ if calc_button:
                             st.markdown(f"- Target Refi Loan (80% ARV): ${brrrr_lb.get('loan_amount', 0):,.0f}")
                             st.markdown(f"- Interest Rate: {brrrr_lb.get('interest_rate', 0)*100:,.1f}%")
                             st.markdown(f"- Monthly Payment: ${brrrr_lb.get('monthly_payment', 0):,.0f}")
+                            
+                            st.markdown("---")
+                            st.markdown("**Purchase Costs**")
+                            brrrr_cb = brrrr_res.get('costs_breakdown', {})
+                            st.markdown(f"- Title & Escrow: ${brrrr_cb.get('title_escrow_fee', 0):,.0f}")
+                            st.markdown(f"- Wholesale Fee: ${brrrr_cb.get('wholesale_fee', 0):,.0f}")
+                            st.markdown(f"- Realtor Commission: ${brrrr_cb.get('realtor_commission_amount', 0):,.0f}")
+                            st.markdown(f"- Refinance Costs (3%): ${arv_override * 0.03:,.0f}")
                             
                             st.markdown("---")
                             st.markdown("**Annual Revenue**")

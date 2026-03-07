@@ -107,9 +107,10 @@ def calculate_mao(args):
     
     effective_rehab = args.rehab
     
-    # Lender lends on (MAO + Assignment Fee).
+    # Lender lends on (MAO + Assignment Fee + Realtor Commission).
     ff_end_buyer_price = (args.arv * 0.75) - effective_rehab
-    ff_mao = ff_end_buyer_price - args.wholesale_fee
+    # End Buyer Price = MAO + Wholesale Fee + (MAO * Realtor%)
+    ff_mao = (ff_end_buyer_price - args.wholesale_fee) / (1 + args.realtor_commission)
     
     # Calculate detailed flip metrics based strictly on the Total Acquisition Cost
     ff_loan = 0.80 * (ff_end_buyer_price + effective_rehab)
@@ -184,7 +185,8 @@ def calculate_mao(args):
     numerator = noi - ((effective_rehab_bh + title_escrow_fee) * target_coc)
     
     bh_end_buyer_price = numerator / denominator
-    bh_mao = bh_end_buyer_price - args.wholesale_fee
+    # End Buyer Price = MAO + Wholesale Fee + (MAO * Realtor%)
+    bh_mao = (bh_end_buyer_price - args.wholesale_fee) / (1 + args.realtor_commission)
     
     # Calculate resultant loan terms
     bh_loan_amount = bh_end_buyer_price * 0.816
@@ -221,7 +223,8 @@ def calculate_mao(args):
     refinance_costs = args.arv * 0.03
     brrrr_end_buyer_price = (args.arv * 0.75) - effective_rehab_brrrr
     
-    brrrr_mao = brrrr_end_buyer_price - args.wholesale_fee
+    # End Buyer Price = MAO + Wholesale Fee + (MAO * Realtor%)
+    brrrr_mao = (brrrr_end_buyer_price - args.wholesale_fee) / (1 + args.realtor_commission)
     brrrr_annual_debt_service = refinance_amount * factor
     brrrr_monthly_payment = brrrr_annual_debt_service / 12
     brrrr_annual_cash_flow = noi - brrrr_annual_debt_service
@@ -252,7 +255,7 @@ def calculate_mao(args):
             # We penalize the MAO dollar-for-dollar by the difference between the 80% ARV loan and this new reduced loan.
             loan_shortfall = refinance_amount - reduced_refinance_amount
             brrrr_end_buyer_price -= loan_shortfall
-            brrrr_mao -= loan_shortfall
+            brrrr_mao = (brrrr_end_buyer_price - args.wholesale_fee) / (1 + args.realtor_commission)
             
             # Recalculate cashflow which will now exactly equal the 5% target
             brrrr_annual_cash_flow = required_annual_cf
@@ -293,7 +296,9 @@ def calculate_mao(args):
                     "holding_costs": round(ff_holding_costs, 2),
                     "selling_costs": round(ff_selling_costs, 2),
                     "title_escrow_fee": title_escrow_fee,
-                    "wholesale_fee": args.wholesale_fee
+                    "wholesale_fee": args.wholesale_fee,
+                    "realtor_commission": args.realtor_commission,
+                    "realtor_commission_amount": round(ff_mao * args.realtor_commission, 2)
                 },
                 "lending_breakdown": {
                     "loan_amount": round(ff_loan, 2),
@@ -318,6 +323,13 @@ def calculate_mao(args):
                 "monthly_cash_flow": round(bh_monthly_cash_flow, 2),
                 "coc_return": round(target_coc, 4),
                 "cap_rate": round(bh_cap_rate, 4),
+                "costs_breakdown": {
+                    "rehab": effective_rehab_bh,
+                    "title_escrow_fee": title_escrow_fee,
+                    "wholesale_fee": args.wholesale_fee,
+                    "realtor_commission": args.realtor_commission,
+                    "realtor_commission_amount": round(appraisal_capped_bh_mao * args.realtor_commission, 2)
+                },
                 "lending_breakdown": {
                     "loan_amount": round(bh_loan_amount, 2),
                     "interest_rate": bh_interest_rate,
@@ -344,6 +356,13 @@ def calculate_mao(args):
                 "monthly_cash_flow": round(brrrr_monthly_cash_flow, 2),
                 "coc_return": brrrr_coc if isinstance(brrrr_coc, str) else round(brrrr_coc, 4),
                 "cap_rate": round(brrrr_cap_rate, 4),
+                "costs_breakdown": {
+                    "rehab": effective_rehab_brrrr,
+                    "title_escrow_fee": title_escrow_fee,
+                    "wholesale_fee": args.wholesale_fee,
+                    "realtor_commission": args.realtor_commission,
+                    "realtor_commission_amount": round(brrrr_mao * args.realtor_commission, 2)
+                },
                 "lending_breakdown": {
                     "loan_amount": round(refinance_amount, 2),
                     "interest_rate": bh_interest_rate,
