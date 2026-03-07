@@ -267,7 +267,7 @@ with col_e:
     ins_str = st.text_input("Insurance / Year", key="ins_input", on_change=format_currency_input, args=("ins_input",))
     manual_ins = parse_currency(ins_str)
 
-col_f, col_g, col_h = st.columns(3)
+col_f, col_g, col_h = st.columns([1.5, 1, 1])
 with col_f:
     neighborhood_class_override = st.selectbox(
         "Area Grade",
