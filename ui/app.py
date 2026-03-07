@@ -144,6 +144,14 @@ st.markdown("""
         border: 1px solid #334155;
     }
     
+    /* Force Selectbox to match width of text inputs */
+    div[data-baseweb="select"] {
+        width: 100% !important;
+    }
+    div[data-testid="stSelectbox"] {
+        width: 100% !important;
+    }
+    
     /* Override Streamlit Tabs */
     button[data-baseweb="tab"] {
         color: #94a3b8 !important;
