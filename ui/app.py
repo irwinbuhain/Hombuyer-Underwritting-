@@ -387,7 +387,6 @@ if calc_button:
                         st.markdown(f"- Rehab: ${ff_cb.get('rehab', 0):,.0f}")
                         st.markdown(f"- Wholesale Fee: ${ff_cb.get('wholesale_fee', 0):,.0f}")
                         st.markdown(f"- Title & Escrow: ${ff_cb.get('title_escrow_fee', 0):,.0f}")
-                        st.markdown(f"- Wholesale Fee: ${ff_cb.get('wholesale_fee', 0):,.0f}")
                         st.markdown(f"- Realtor Commission: ${ff_cb.get('realtor_commission_amount', 0):,.0f}")
                         st.markdown(f"- Holding Costs (6mo): ${ff_cb.get('holding_costs', 0):,.0f}")
                         st.markdown(f"- Selling Costs (7.5%): ${ff_cb.get('selling_costs', 0):,.0f}")
